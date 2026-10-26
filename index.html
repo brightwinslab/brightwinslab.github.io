@@ -8,7 +8,11 @@
 <meta property="og:title" content="Bright Wins Lab">
 <meta property="og:description" content="Thoughtful apps that help people win the day.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://brightwinslab.com/">
+<meta property="og:image" content="https://brightwinslab.com/shots/family.webp">
+<link rel="canonical" href="https://brightwinslab.com/">
 <link rel="icon" href="favicon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"Bright Wins Lab","legalName":"Central Digital Ventures LLC","url":"https://brightwinslab.com/","logo":"https://brightwinslab.com/logo.svg","email":"support@brightwinslab.com"},{"@type":"SoftwareApplication","name":"Win the Day: Family Chores","applicationCategory":"LifestyleApplication","operatingSystem":"Android, iOS, Web","publisher":{"@type":"Organization","name":"Bright Wins Lab"}}]}</script>
 <link rel="preload" href="fonts/fraunces-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -22,6 +26,8 @@
 </a>
 <nav aria-label="Main"><ul>
 <li><a class="link" href="#work">Work</a></li>
+<li><a class="link" href="#inside">Screens</a></li>
+<li><a class="link" href="#faq">FAQ</a></li>
 <li><a class="link" href="#studio">Studio</a></li>
 <li><a class="pill dark" href="#contact">Contact</a></li>
 </ul></nav>
@@ -31,7 +37,7 @@
 <h1>Thoughtful apps that help people <em>win the day.</em></h1>
 <p class="lede">We design and build small, well-made tools for everyday life, starting with families and the routines that hold them together.</p>
 <div class="row">
-<a class="pill dark" href="#work">See our work</a>
+<a class="pill dark" href="#inside">See the app</a>
 <a class="pill line" href="#contact">Get in touch</a>
 </div>
 </div>
@@ -40,23 +46,56 @@
 
 <main class="wrap">
 <section id="work" aria-labelledby="work-h">
-<div class="head"><h2 id="work-h">Work</h2><span>First app on the way, more in progress</span></div>
+<div class="head"><h2 id="work-h">Work</h2><span>Our first app, with more in progress</span></div>
 <div class="work">
-<div class="phone" aria-hidden="true">
-<div class="frame"><div class="screen">
-<div class="tiny">Today</div>
-<div class="big">3 of 4</div>
-<div class="bar"><i></i></div>
-<ul class="tasks"><li>Make the bed</li><li>Read for 15 minutes</li><li class="todo">Feed the dog</li></ul>
-</div></div>
-</div>
+<div class="phone"><img class="shot" src="shots/family.webp" alt="Win the Day family page showing each family member's progress for the day" width="270" height="480"></div>
 <div class="info">
 <img class="appicon" src="logo.svg" alt="" width="72" height="72">
-<div class="tag">Android app</div>
+<div class="tag">Android · iPhone · Web</div>
 <h3>Win the Day: Family Chores</h3>
-<p>A daily goals app for kids and parents. Streaks, badges and rewards make routines feel like progress, and a parent PIN keeps adults in control.</p>
-<span class="soon">Coming to Google Play</span>
+<p>A daily goals app for kids and parents. Kids tick off tasks on a chart in their favorite theme and earn streaks, badges and rewards. Parents set it up once, share chores between kids, and see everyone's progress at a glance.</p>
+<div class="stores">
+<span class="store"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M3.6 2.3 13.4 12l-9.8 9.7c-.4-.2-.6-.6-.6-1.1V3.4c0-.5.2-.9.6-1.1Zm11.2 11.1 2.6 2.6-11.5 6.6 8.9-9.2Zm3.9-3.7 2.6 1.5c.7.4.7 1.4 0 1.8l-2.7 1.5-2.8-2.8 2.9-2Zm-13.8-7.8L16.4 8.5l-2.6 2.6-8.9-9.2Z"/></svg><span><small>Coming soon to</small>Google Play</span></span>
+<span class="store"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.4.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.7-1-2.7-4.1ZM13.9 5c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.2.1 2.4-.6 3.1-1.5Z"/></svg><span><small>Coming soon to the</small>App Store</span></span>
 </div>
+</div>
+</div>
+</section>
+
+<section id="inside" aria-labelledby="inside-h">
+<div class="head"><h2 id="inside-h">A look inside</h2><span>Real screens from the app · scroll for more</span></div>
+<div class="gallery" tabindex="0" aria-label="App screenshots">
+<figure><img src="shots/today.webp" alt="A child's chart for today with tasks to tick off" width="220" height="391" loading="lazy"><figcaption>A chart for each child</figcaption></figure>
+<figure><img src="shots/win.webp" alt="You won the day celebration with a week of stars" width="220" height="391" loading="lazy"><figcaption>Celebrate every won day</figcaption></figure>
+<figure><img src="shots/week.webp" alt="Week view with every task ticked" width="220" height="391" loading="lazy"><figcaption>See the whole week</figcaption></figure>
+<figure><img src="shots/themes.webp" alt="Theme picker with sports, racing, animals, space and more" width="220" height="391" loading="lazy"><figcaption>Dozens of kid themes</figcaption></figure>
+<figure><img src="shots/store.webp" alt="Points store with rewards set by the parent" width="220" height="391" loading="lazy"><figcaption>Earn points, pick rewards</figcaption></figure>
+<figure><img src="shots/badges.webp" alt="Trophy room with earned badges" width="220" height="391" loading="lazy"><figcaption>Badges worth working for</figcaption></figure>
+<figure><img src="shots/dashboard.webp" alt="Parent dashboard with progress for each family member" width="220" height="391" loading="lazy"><figcaption>A parent dashboard</figcaption></figure>
+<figure><img src="shots/calendar.webp" alt="Monthly calendar with winning days marked" width="220" height="391" loading="lazy"><figcaption>A month at a glance</figcaption></figure>
+</div>
+</section>
+
+<section id="features" aria-labelledby="features-h">
+<div class="head"><h2 id="features-h">What it does</h2></div>
+<div class="feats">
+<div><b>✅ Daily charts</b><p>Each child gets their own list, grouped by morning, afternoon and evening, with pictures for kids still learning to read.</p></div>
+<div><b>👥 Shared chores</b><p>Give a chore to one child, let kids take turns, or make it up for grabs for whoever gets there first.</p></div>
+<div><b>🏆 Streaks, badges and rewards</b><p>Kids win the day, build streaks and earn the weekly or monthly reward you choose.</p></div>
+<div><b>🪙 Points store</b><p>An optional store where kids spend points on prizes you set, with a way to turn points into allowance.</p></div>
+<div><b>🖨️ Printable charts</b><p>Print a chart for the fridge, then scan it with your phone to update the app.</p></div>
+<div><b>🔒 Parent controls</b><p>A parent PIN guards settings and past days. Parents and caregivers can join the same family.</p></div>
+</div>
+</section>
+
+<section id="faq" aria-labelledby="faq-h">
+<div class="head"><h2 id="faq-h">Questions</h2></div>
+<div class="faq">
+<details><summary>Who is Win the Day for?</summary><p>Families with kids of any age. Grown-ups can keep their own charts too, with themes made for adults.</p></details>
+<details><summary>Can the whole family use it on different phones?</summary><p>Yes. Everyone joins the same family with a code, and check-offs sync between phones. Caregivers can be given access to just the kids they look after.</p></details>
+<details><summary>Does it work without internet?</summary><p>Yes. Check-offs are saved on the phone and sync when you are back online.</p></details>
+<details><summary>What happens to my family's information?</summary><p>We collect only what the app needs to work, we do not sell it, and you can delete your account and data at any time. See our <a href="/win-the-day-legal/privacy.html">privacy policy</a>.</p></details>
+<details><summary>When can I get it?</summary><p>Win the Day is in testing now and is coming soon to Google Play and the App Store. <a href="mailto:support@brightwinslab.com?subject=Tell%20me%20when%20Win%20the%20Day%20launches">Write to us</a> to hear when it launches.</p></details>
 </div>
 </section>
 
@@ -83,6 +122,7 @@
 <nav aria-label="Legal">
 <a href="/win-the-day-legal/privacy.html">Privacy policy</a>
 <a href="/win-the-day-legal/delete-data.html">Delete your data</a>
+<a href="mailto:support@brightwinslab.com">Support</a>
 </nav>
 </div>
 </footer>
