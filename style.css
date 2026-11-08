@@ -78,7 +78,7 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}footer a{color:var(--muted)}
 .faq details p{margin:10px 0 2px;color:var(--muted)}
 
 /* launch update (Nov 2026) */
-.offer{margin:18px 0 0;padding:12px 18px;border-radius:14px;background:var(--gold-soft);border:1px solid var(--gold-line);color:var(--gold-ink);max-width:640px}
+.offer{margin:18px 0 22px;padding:12px 18px;border-radius:14px;background:var(--gold-soft);border:1px solid var(--gold-line);color:var(--gold-ink);max-width:640px}
 .note{font-size:15px;color:var(--muted);margin-top:10px}
 a.store{text-decoration:none}
 a.store:hover{filter:brightness(1.15)}
