@@ -35,7 +35,7 @@
     pageStyle.textContent='@page{size:'+(S.a4?'A4':'letter')+' '+(land?'landscape':'portrait')+';margin:0}';
     var name=S.kid.trim(),title=name?esc(name)+(/s$/i.test(name)?'’':'’s')+' Chore Chart':'My Chore Chart';
     var tasks=S.tasks.length?S.tasks:[['⭐','']];
-    var h='<div class="ch-head"><div><div class="ch-title">'+title+'</div><div class="ch-sub">'+(land?'Week of ________________':'Date: ________________')+'</div></div><div class="ch-stars">★ ★ ★</div></div>';
+    var h='<div class="ch-head"><div><div class="ch-title">'+title+'</div><div class="ch-sub">'+(land?'Week of ________________':'Date: ________________')+'</div></div><img class="ch-logo" src="../logo.svg" alt="Win the Day"></div>';
     if(land){
       var d=[];for(var i=0;i<7;i++)d.push(DAYS[(i+S.start)%7]);
       h+='<div class="ch-grid"><div class="gr hd"><span class="tk">Chores</span>'+d.map(function(x){return '<span>'+x+'</span>'}).join('')+'</div>';
