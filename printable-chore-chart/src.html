@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Printable Chore Chart for Kids (Customizable) · Win the Day</title>
+<meta name="description" content="Make a free printable chore chart for your kids in a minute. Add your child's name, pick chores with pictures, choose colors and a weekly or daily layout, then print or save as PDF.">
+<meta name="theme-color" content="#ffb441">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:title" content="Free printable chore chart for kids">
+<meta property="og:description" content="Add your child's name, pick chores with pictures, choose colors, then print or save as PDF. Free from Win the Day.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://brightwinslab.com/printable-chore-chart/">
+<meta property="og:image" content="https://brightwinslab.com/printable-chore-chart/preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://brightwinslab.com/printable-chore-chart/">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Free printable chore chart maker","url":"https://brightwinslab.com/printable-chore-chart/","applicationCategory":"LifestyleApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Bright Wins Lab","url":"https://brightwinslab.com/"}}</script>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="chart.css">
+</head>
+<body>
+{{SPRITE}}
+<header class="top" id="top">
+<div class="wrap bar">
+<a class="brand" href="../" aria-label="Bright Wins Lab home">
+<svg width="38" height="38" viewBox="0 0 44 44" aria-hidden="true"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd84f"/><stop offset=".55" stop-color="#ffa63a"/><stop offset="1" stop-color="#ff7c67"/></linearGradient></defs><circle cx="22" cy="22" r="21" fill="url(#bg)"/><path d="M12.5 23l6.5 6.5 13-14" fill="none" stroke="#2b1f5c" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<span>Bright Wins Lab</span>
+</a>
+<nav id="menu" aria-label="Main"><ul>
+<li><a href="../#how">How it works</a></li>
+<li><a href="../#features">Features</a></li>
+<li><a href="./" aria-current="page">Free printable</a></li>
+<li><a href="../#faq">FAQ</a></li>
+</ul></nav>
+<a class="btn sm ink" href="../#get">Get the app</a>
+<button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+</header>
+
+<main id="main">
+<section class="pc-hero">
+<div class="wrap">
+<span class="chip">Free · No sign-up</span>
+<h1>Free printable chore chart for kids</h1>
+<p class="lede">Add your child's name, pick their chores, choose colors, then print it or save it as a PDF. Takes about a minute.</p>
+</div>
+</section>
+
+<section class="maker">
+<div class="wrap maker-in">
+<form class="controls" id="controls" onsubmit="return false">
+<div class="ctl">
+<label for="kid">Child's name</label>
+<input id="kid" maxlength="18" placeholder="e.g. Maya" autocomplete="off">
+</div>
+<div class="ctl">
+<span class="lbl">Chart</span>
+<div class="seg" role="radiogroup" aria-label="Chart type">
+<label><input type="radio" name="layout" value="week" checked><span>Weekly</span></label>
+<label><input type="radio" name="layout" value="day"><span>Daily</span></label>
+</div>
+</div>
+<div class="ctl" id="startCtl">
+<span class="lbl">Week starts on</span>
+<div class="seg" role="radiogroup" aria-label="Week starts on">
+<label><input type="radio" name="start" value="0" checked><span>Sunday</span></label>
+<label><input type="radio" name="start" value="1"><span>Monday</span></label>
+</div>
+</div>
+<div class="ctl">
+<span class="lbl">Colors</span>
+<div class="swatches" role="radiogroup" aria-label="Colors">
+<label title="Sunshine"><input type="radio" name="theme" value="sun" checked><i class="t-sun"></i><span class="sr">Sunshine</span></label>
+<label title="Ocean"><input type="radio" name="theme" value="ocean"><i class="t-ocean"></i><span class="sr">Ocean</span></label>
+<label title="Garden"><input type="radio" name="theme" value="garden"><i class="t-garden"></i><span class="sr">Garden</span></label>
+<label title="Berry"><input type="radio" name="theme" value="berry"><i class="t-berry"></i><span class="sr">Berry</span></label>
+<label title="Space"><input type="radio" name="theme" value="space"><i class="t-space"></i><span class="sr">Space</span></label>
+<label title="Ink saver"><input type="radio" name="theme" value="mono"><i class="t-mono"></i><span class="sr">Ink saver</span></label>
+</div>
+</div>
+<div class="ctl">
+<span class="lbl">Chores <small id="count"></small></span>
+<div class="seg small" role="radiogroup" aria-label="Chore ideas for">
+<label><input type="radio" name="age" value="little" checked><span>Little kids</span></label>
+<label><input type="radio" name="age" value="big"><span>Big kids</span></label>
+</div>
+<div class="picks" id="picks"></div>
+<div class="add">
+<input id="custom" maxlength="28" placeholder="Add your own chore" autocomplete="off">
+<button type="button" id="addBtn" class="btn sm ink">Add</button>
+</div>
+<div class="mine" id="mine" aria-live="polite"></div>
+</div>
+<div class="ctl">
+<label for="reward">Reward (optional)</label>
+<input id="reward" maxlength="40" placeholder="e.g. Movie night">
+</div>
+<div class="ctl row2">
+<label class="check"><input type="checkbox" id="pics" checked> Show pictures</label>
+<label class="check"><input type="checkbox" id="a4"> A4 paper</label>
+</div>
+<button type="button" class="btn sun print" id="printBtn">🖨️ Print or save as PDF</button>
+<p class="hint">To save a PDF, choose <b>Save as PDF</b> as the printer. For full colors, turn on <b>Background graphics</b> in the print options.</p>
+</form>
+
+<div class="preview" id="preview" aria-label="Chart preview">
+<div class="paper" id="paper"><div class="sheet" id="sheet"></div></div>
+</div>
+</div>
+</section>
+
+<section class="band cream">
+<div class="wrap">
+<div class="pc-app">
+<div>
+<h2>Want it to count automatically?</h2>
+<p><b>Win the Day</b> is the app version of this chart. Kids tick tasks on a phone or tablet, build streaks, earn badges and spend points on the rewards you choose. You can still print charts from the app, and they scan back in with your phone.</p>
+<p class="offer"><b>Join by December 31:</b> get the full app free for at least your first year.</p>
+<div class="row">
+<a class="store" href="https://play.google.com/store/apps/details?id=com.brightwinslab.winthedayfamily"><svg width="26" height="26"><use href="#i-play"/></svg><span><small>Get it on</small>Google Play</span></a>
+<a class="store web" href="https://brightwinslab.com/win-the-day-legal/app/"><svg width="26" height="26"><use href="#i-web"/></svg><span><small>iPhone or computer</small>Use it on the web</span></a>
+</div>
+</div>
+<img src="../shots/today.webp" alt="Win the Day app showing a child's chart for today" width="270" height="480" loading="lazy">
+</div>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap tips">
+<h2>5 tips for a chore chart that sticks</h2>
+<ol>
+<li><b>Start small.</b> Three to five chores a day is plenty. Add more once the habit is there.</li>
+<li><b>Use pictures.</b> Kids who can't read yet can follow a chart with pictures on their own.</li>
+<li><b>Tick it right away.</b> Hang the chart where the chores happen and let kids mark each one as soon as it's done.</li>
+<li><b>Celebrate the day, not perfection.</b> A finished day is a win, even if yesterday wasn't.</li>
+<li><b>Look back together.</b> Spend five minutes at the end of the week counting wins and picking next week's reward.</li>
+</ol>
+<h2>Chore ideas by age</h2>
+<p><b>Ages 3 to 5:</b> put toys away, put clothes in the hamper, help set the table, feed a pet with help, brush teeth.</p>
+<p><b>Ages 6 to 8:</b> make the bed, pack a school bag, clear the table, water plants, tidy their room, read for 15 minutes.</p>
+<p><b>Ages 9 and up:</b> homework, load or empty the dishwasher, take out the trash, fold laundry, walk the dog, practice an instrument.</p>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="wrap foot">
+<div class="foot-brand"><b>Bright Wins Lab</b><span>A brand of Central Digital Ventures LLC. &copy; 2026</span></div>
+<nav aria-label="Legal">
+<a href="/win-the-day-legal/privacy.html">Privacy policy</a>
+<a href="mailto:support@brightwinslab.com">Support</a>
+</nav>
+<div class="follow-mini" aria-label="Follow us">
+<a class="s ig" href="https://www.instagram.com/brightwinslab/" aria-label="Instagram"><svg><use href="#i-ig"/></svg></a>
+<a class="s yt" href="https://www.youtube.com/@BrightWinsLab" aria-label="YouTube"><svg><use href="#i-yt"/></svg></a>
+<a class="s tt" href="https://www.tiktok.com/@brightwinslab" aria-label="TikTok"><svg><use href="#i-tt"/></svg></a>
+<a class="s pin" href="https://www.pinterest.com/brightwinslab/" aria-label="Pinterest"><svg><use href="#i-pin"/></svg></a>
+<a class="s fb" href="https://www.facebook.com/brightwinslab" aria-label="Facebook"><svg><use href="#i-fb"/></svg></a>
+</div>
+</div>
+</footer>
+
+<template id="qrTpl">{{QR}}</template>
+<script src="chart.js"></script>
+</body>
+</html>

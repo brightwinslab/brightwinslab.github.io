@@ -215,3 +215,10 @@ footer .follow-mini{margin:0}
 /* keep app screenshots at their true shape */
 .ph,.gallery img{height:auto;aspect-ratio:540/960;object-fit:cover}
 @media (min-width:981px){.ph{width:300px}.ph.front{top:20px}.ph.back{top:90px}.hero-art{height:640px}}
+
+.promo{display:flex;align-items:center;gap:22px;text-decoration:none;color:var(--ink);background:#fff;border:2px dashed var(--sun2);border-radius:24px;padding:22px 26px;transition:transform .15s,box-shadow .15s}
+.promo:hover{color:var(--ink);transform:translateY(-3px);box-shadow:var(--shadow)}
+.promo-ic{font-size:42px}
+.promo>span:nth-child(2){flex:1;color:var(--muted);font-size:17px}
+.promo b{display:block;color:var(--ink);font:800 26px/1.15 'Baloo 2'}
+@media (max-width:640px){.promo{flex-wrap:wrap}.promo .btn{width:100%;text-align:center}}
