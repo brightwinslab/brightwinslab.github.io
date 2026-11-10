@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#070b18">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bright Gaze">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Bright Gaze</title>
+<style>
+@font-face{font-family:"BG Display";src:url(display.woff2) format("woff2");font-weight:600;font-display:swap}
+:root{--ink:#070b18;--navy:#0d1530;--p1:rgba(255,255,255,.04);--p2:rgba(255,255,255,.07);--p3:rgba(255,255,255,.11);--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);
+ --tx:#eef1f8;--tx2:#a3aec6;--tx3:#6f7b97;--gold:#ffc766;--gold2:#ffa94d;--goldink:#1d1405;--look:#62e3b5;--away:#ffbe6b;--rec:#ff7a6b;
+ --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);--ease:cubic-bezier(.2,.8,.2,1);
+ --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI Variable Text","Segoe UI",Roboto,Inter,"Helvetica Neue",Arial,sans-serif;--disp:"BG Display",Georgia,"Times New Roman",serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--ink);color:var(--tx);font-family:var(--sans);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+body{background:radial-gradient(120% 60% at 100% -10%,rgba(255,199,102,.10),transparent 60%),radial-gradient(120% 70% at -20% 110%,rgba(96,104,255,.12),transparent 60%),linear-gradient(180deg,#0b1124,var(--ink) 70%);background-attachment:fixed;overscroll-behavior-y:none}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;touch-action:manipulation}
+input{font:inherit;color:inherit}
+.ic{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:14px}
+.hide{display:none!important}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:calc(var(--sat) + 12px) 20px 12px;background:linear-gradient(180deg,rgba(7,11,24,.92),rgba(7,11,24,.72));-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid transparent;transition:border-color .3s}
+.top.scrolled{border-bottom-color:var(--line)}
+.orb{width:30px;height:30px;border-radius:50%;flex:none;background:radial-gradient(circle at 36% 32%,#fff6dc 0,#ffd27a 28%,#ff9f45 72%,#c76a1e 100%);box-shadow:0 0 0 5px rgba(255,199,102,.08),0 0 20px rgba(255,186,90,.5)}
+.brand{flex:1;min-width:0;line-height:1.15}.brand b{display:block;font-family:var(--disp);font-weight:600;font-size:19px;letter-spacing:.005em}.brand span{font-size:12px;color:var(--tx3)}
+.conn{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px;border-radius:99px;background:var(--p2);font-size:13px;font-weight:600;color:var(--tx2);white-space:nowrap}
+.conn i{width:8px;height:8px;border-radius:50%;background:var(--tx3)}
+.conn.on i{background:var(--look);box-shadow:0 0 0 4px rgba(98,227,181,.16)}.conn.on{color:#c9f5e4}
+.conn.wait i{background:var(--away)}.conn.off i{background:var(--rec)}
+.gear{width:44px;height:44px;margin-right:-8px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--tx2)}
+.gear:active{background:var(--p2)}
+
+/* ---------- views ---------- */
+main{padding:14px 20px calc(var(--sab) + 108px);max-width:620px;margin:0 auto}
+.view{animation:viewin .32s var(--ease)}@keyframes viewin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-family:var(--disp);font-weight:600;font-size:32px;line-height:1.1;letter-spacing:-.005em;margin:18px 0 6px}
+.lede{color:var(--tx2);margin:0 0 20px;font-size:15.5px;max-width:34em}
+h2{font-size:17px;font-weight:650;margin:30px 0 12px;display:flex;align-items:baseline;gap:10px}h2 small{font-size:13px;font-weight:500;color:var(--tx3)}
+.banner{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:18px;background:rgba(255,190,107,.08);border:1px solid rgba(255,190,107,.2);color:#ffe2b8;font-size:14.5px;margin:12px 0 4px}
+.banner .ic{color:var(--away);margin-top:1px}
+
+/* ---------- the now card (the one bold element) ---------- */
+.now{position:relative;overflow:hidden;border-radius:30px;padding:22px 22px 20px;margin-top:10px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid var(--line);box-shadow:0 30px 60px -36px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.06);isolation:isolate}
+.now::before{content:"";position:absolute;inset:-40% -30% auto auto;width:120%;height:140%;background:radial-gradient(closest-side,var(--hue,#ffc766),transparent);opacity:.16;z-index:-1;transition:background .8s,opacity .8s}
+.now .where{font-size:13.5px;color:var(--tx2);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.timer{font-variant-numeric:tabular-nums;font-weight:600;color:var(--tx);background:rgba(0,0,0,.25);padding:4px 10px;border-radius:99px;font-size:13.5px}
+.now .title{font-family:var(--disp);font-weight:600;font-size:34px;line-height:1.08;margin:8px 0 4px;min-height:37px}
+.now .sub{color:var(--tx2);font-size:15px;min-height:22px}
+.gz{display:flex;align-items:center;gap:16px;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.eye{position:relative;width:62px;height:62px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 38% 34%,rgba(255,255,255,.18),rgba(255,255,255,.04) 70%);color:var(--tx3);transition:background .6s,color .6s}
+.eye .ic{width:28px;height:28px}
+.eye::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px solid currentColor;opacity:0;transition:opacity .6s}
+.eye.look{color:var(--look);background:radial-gradient(circle at 38% 34%,rgba(98,227,181,.45),rgba(98,227,181,.10) 70%)}
+.eye.look::after{opacity:.35;animation:breathe 2.8s ease-in-out infinite}
+.eye.away{color:var(--away);background:radial-gradient(circle at 38% 34%,rgba(255,190,107,.4),rgba(255,190,107,.08) 70%)}
+@keyframes breathe{0%,100%{transform:scale(.94);opacity:.18}50%{transform:scale(1.06);opacity:.45}}
+.gz>div:nth-child(2){min-width:0}.gz b{display:block;font-size:18px;font-weight:650;white-space:nowrap}.gz span{color:var(--tx2);font-size:14px;white-space:nowrap}
+.nums{margin-left:auto;display:flex;gap:16px;text-align:right}.nums div{display:flex;flex-direction:column}.nums b{font-size:20px;font-variant-numeric:tabular-nums}.nums span{font-size:12.5px;color:var(--tx3)}
+.now.asleep .title{color:var(--tx2)}
+
+/* controls */
+.ctl{display:grid;grid-template-columns:1fr 76px 76px;gap:10px;margin-top:14px}
+.b{display:flex;align-items:center;justify-content:center;gap:10px;min-height:64px;padding:0 18px;border-radius:22px;background:var(--p2);border:1px solid var(--line);font-weight:650;font-size:16.5px;transition:transform .15s var(--ease),background .2s,opacity .2s;user-select:none;-webkit-user-select:none}
+.b:active{transform:scale(.96);background:var(--p3)}
+.b.gold{background:linear-gradient(160deg,#ffd98a,#ffac4a);color:var(--goldink);border-color:transparent;box-shadow:0 14px 30px -14px rgba(255,170,70,.75),inset 0 1px 0 rgba(255,255,255,.55)}
+.b.gold:active{filter:brightness(.96)}
+.b.col{flex-direction:column;gap:4px;font-size:12.5px;font-weight:600;color:var(--tx2);padding:0}.b.col .ic{color:var(--tx)}
+.b[disabled]{opacity:.38;pointer-events:none}
+.b.sm{min-height:48px;border-radius:16px;font-size:15px;padding:0 16px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.row2>.b{white-space:nowrap;font-size:15.5px;padding:0 12px}
+.say{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.say .b{justify-content:flex-start;padding:0 16px;font-size:15.5px}.say .b .ic{color:var(--gold)}
+.vol{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:22px;background:var(--p1);border:1px solid var(--line);margin-top:10px;color:var(--tx2)}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:36px;background:transparent;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:6px;background:linear-gradient(90deg,var(--gold) var(--p,50%),rgba(255,255,255,.12) var(--p,50%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;margin-top:-11px;background:#fff7e6;box-shadow:0 4px 14px rgba(0,0,0,.5),0 0 0 6px rgba(255,199,102,.15)}
+input[type=range]::-moz-range-track{height:6px;border-radius:6px;background:rgba(255,255,255,.12)}input[type=range]::-moz-range-progress{height:6px;border-radius:6px;background:var(--gold)}
+input[type=range]::-moz-range-thumb{width:28px;height:28px;border:0;border-radius:50%;background:#fff7e6}
+
+/* activity tiles */
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.act{position:relative;display:block;text-align:left;border-radius:22px;overflow:hidden;background:var(--p1);border:1px solid var(--line);transition:transform .18s var(--ease)}
+.act:active{transform:scale(.97)}
+.act .art{aspect-ratio:7/6;background:radial-gradient(90% 90% at 30% 20%,color-mix(in srgb,var(--hue) 55%,#fff 0%),color-mix(in srgb,var(--hue) 30%,#0b1124) 75%);background-size:cover;background-position:center}
+.act .nm{padding:11px 14px 13px;font-weight:650;font-size:15px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.act.on{border-color:color-mix(in srgb,var(--hue) 70%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--hue) 25%,transparent)}
+.act .playing{font-size:11.5px;font-weight:700;color:var(--goldink);background:var(--gold);padding:3px 8px;border-radius:99px}
+.act.off .art{filter:saturate(.4) brightness(.7)}
+.feed{margin-top:8px}.feed div{display:flex;justify-content:space-between;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line);font-size:14.5px;color:var(--tx2)}.feed div:last-child{border-bottom:0}.feed time{color:var(--tx3);font-variant-numeric:tabular-nums}
+
+/* ---------- lists (voices) ---------- */
+.list{border-radius:22px;background:var(--p1);border:1px solid var(--line);overflow:hidden}
+.vr{border-bottom:1px solid var(--line)}.vr:last-child{border-bottom:0}
+.vh{display:flex;align-items:center;gap:12px;padding:12px 12px 12px 18px;min-height:68px}
+.vh .lbl{flex:1;min-width:0}.vh .lbl b{display:block;font-weight:600;font-size:15.5px;line-height:1.3}.vh .lbl span{font-size:13px;color:var(--tx3)}
+.vh .lbl span.fam{color:var(--gold)}
+.ib{width:46px;height:46px;border-radius:15px;display:flex;align-items:center;justify-content:center;background:var(--p2);flex:none;transition:transform .15s var(--ease)}
+.ib:active{transform:scale(.92);background:var(--p3)}
+.ib.mic{background:rgba(255,122,107,.12);color:#ffb3a8}
+.ib.play.on{color:var(--gold)}
+.vx{padding:0 16px 14px 18px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:4px;height:40px;padding:0 4px 0 12px;border-radius:13px;background:var(--p2);font-size:13.5px;color:var(--tx2)}
+.chip button{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center}.chip button:active{background:var(--p3)}.chip .ic{width:18px;height:18px}
+.grp{margin-top:12px}
+.grp summary{list-style:none;display:flex;align-items:center;gap:10px;padding:14px 2px;font-weight:650;cursor:pointer}
+.grp summary::-webkit-details-marker{display:none}.grp summary .ic{width:18px;height:18px;color:var(--tx3);transition:transform .25s var(--ease)}.grp[open] summary .ic{transform:rotate(90deg)}
+.grp summary small{color:var(--tx3);font-weight:500;font-size:13px;margin-left:auto}
+
+/* ---------- photos ---------- */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.ph{position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden;background:var(--p2)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .4s}.ph img.ok{opacity:1}
+.ph.up::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.12) 50%,transparent 70%);background-size:200% 100%;animation:shim 1.2s linear infinite}
+@keyframes shim{from{background-position:150% 0}to{background-position:-50% 0}}
+.empty{padding:34px 22px;text-align:center;color:var(--tx2);border:1px dashed var(--line2);border-radius:22px;margin-top:16px}
+.empty .ic{width:40px;height:40px;color:var(--tx3);stroke-width:1.3;margin-bottom:8px}
+
+/* ---------- insights ---------- */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{padding:16px 18px;border-radius:20px;background:var(--p1);border:1px solid var(--line)}.tile b{display:block;font-size:26px;font-weight:650;font-variant-numeric:tabular-nums;line-height:1.2}.tile span{font-size:13.5px;color:var(--tx2)}
+.chart{border-radius:22px;background:var(--p1);border:1px solid var(--line);padding:16px 14px 10px}
+.chart svg{display:block;width:100%;height:auto}
+.ses{display:flex;gap:14px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}.ses:last-child{border-bottom:0}
+.ses .d{width:46px;text-align:center;flex:none;line-height:1.1}.ses .d b{display:block;font-size:19px}.ses .d span{font-size:11.5px;color:var(--tx3)}
+.ses .m{flex:1;min-width:0}.ses .m b{font-weight:600;font-size:15px}.ses .m span{display:block;font-size:13px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ses .r{text-align:right;font-size:13px;color:var(--tx2)}.ses .r b{display:block;font-size:16px;color:var(--tx)}
+.hbar{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding:10px 2px}.hbar i{grid-column:1/-1;height:8px;border-radius:8px;background:rgba(255,255,255,.07);overflow:hidden}.hbar i::before{content:"";display:block;height:100%;width:var(--w);background:var(--hue);border-radius:8px}
+.hbar span{font-size:14.5px}.hbar b{font-size:13.5px;color:var(--tx2);font-weight:600}
+.note{font-size:13px;color:var(--tx3);margin-top:12px}
+
+/* ---------- tab bar ---------- */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:center;padding:8px 10px calc(var(--sab) + 8px);background:linear-gradient(0deg,rgba(7,11,24,.96),rgba(7,11,24,.78));-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border-top:1px solid var(--line)}
+.tabs button{flex:1;max-width:140px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0 5px;border-radius:16px;font-size:11.5px;font-weight:600;color:var(--tx3);transition:color .2s}
+.tabs button .ic{width:25px;height:25px}
+.tabs button.on{color:var(--tx)}.tabs button.on .ic{color:var(--gold)}
+
+/* ---------- sheets ---------- */
+.scrim{position:fixed;inset:0;z-index:50;background:rgba(3,5,12,.6);opacity:0;transition:opacity .28s;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.scrim.in{opacity:1}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:51;max-height:92vh;overflow:auto;padding:10px 22px calc(var(--sab) + 24px);border-radius:30px 30px 0 0;background:linear-gradient(180deg,#141c36,#0b1124);border-top:1px solid var(--line2);transform:translateY(105%);transition:transform .38s var(--ease);max-width:620px;margin:0 auto;box-shadow:0 -30px 60px -20px rgba(0,0,0,.7)}
+.sheet.in{transform:none}
+.grab{width:40px;height:5px;border-radius:5px;background:var(--line2);margin:0 auto 14px}
+.sheet h3{font-family:var(--disp);font-weight:600;font-size:26px;line-height:1.15;margin:6px 0 6px}
+.sheet .hint{color:var(--tx2);font-size:14.5px;margin:0 0 10px}
+.recbox{display:flex;flex-direction:column;align-items:center;padding:18px 0 4px}
+.recbtn{position:relative;width:118px;height:118px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#ffd98a,#ffac4a);color:var(--goldink);box-shadow:0 18px 40px -16px rgba(255,170,70,.8);transition:transform .2s var(--ease),background .3s}
+.recbtn .ic{width:44px;height:44px;stroke-width:2}
+.recbtn:active{transform:scale(.95)}
+.recbtn.live{background:linear-gradient(160deg,#ff9b8f,#ff6a5c);color:#2a0702;box-shadow:0 0 0 calc(6px + var(--lvl,0) * 26px) rgba(255,122,107,.16),0 18px 40px -16px rgba(255,100,80,.8)}
+.rect{margin-top:14px;font-variant-numeric:tabular-nums;font-size:17px;font-weight:600;color:var(--tx2);min-height:26px}
+.wave{width:100%;height:76px;margin:14px 0 6px}
+.acts3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;margin-top:12px}
+.field{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.field label{font-size:14px;color:var(--tx2);font-weight:600}
+.txt{min-width:0;width:100%;height:54px;border-radius:16px;border:1px solid var(--line2);background:rgba(0,0,0,.25);padding:0 16px;font-size:17px;color:var(--tx);outline:none}.txt:focus{border-color:var(--gold)}
+.dev{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.dev:last-child{border-bottom:0}
+.dev .di{width:42px;height:42px;border-radius:13px;background:var(--p2);display:flex;align-items:center;justify-content:center;color:var(--tx2);flex:none}
+.dev .dl{flex:1;min-width:0}.dev .dl b{display:block;font-weight:600}.dev .dl span{font-size:13px;color:var(--tx3)}
+.tag{font-size:11.5px;font-weight:700;color:var(--look);background:rgba(98,227,181,.13);padding:3px 8px;border-radius:99px;margin-left:6px}
+.link{color:var(--gold);font-weight:600;padding:10px 0}
+.viewer{position:fixed;inset:0;z-index:60;background:rgba(3,5,12,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--sat) + 20px) 16px calc(var(--sab) + 20px);opacity:0;transition:opacity .25s}
+.viewer.in{opacity:1}.viewer img{max-width:100%;max-height:72vh;border-radius:20px;box-shadow:0 30px 80px -30px #000}
+.viewer .row2{width:100%;max-width:420px;margin-top:20px}
+
+/* ---------- pair ---------- */
+.pair{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:calc(var(--sat) + 40px) 26px calc(var(--sab) + 30px);max-width:520px;margin:0 auto}
+.pair .big{width:84px;height:84px;margin:18px 0 26px}
+.pair h1{font-size:40px;margin:0 0 10px}
+.pair .lede{font-size:16.5px}
+.steps{margin:6px 0 26px;padding:0;list-style:none;counter-reset:s}
+.steps li{position:relative;padding:0 0 14px 40px;color:var(--tx2);font-size:15.5px;counter-increment:s}
+.steps li::before{content:counter(s);position:absolute;left:0;top:-1px;width:26px;height:26px;border-radius:50%;background:var(--p2);color:var(--gold);font-weight:700;font-size:13.5px;display:flex;align-items:center;justify-content:center}
+.steps b{color:var(--tx);font-weight:600}
+.code{position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:4px 0 18px}
+.code .c{height:66px;border-radius:16px;background:rgba(0,0,0,.28);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:650;font-variant-numeric:tabular-nums;transition:border-color .2s,background .2s}
+.code .c:nth-child(3){margin-right:8px}
+.code .c.cur{border-color:var(--gold);box-shadow:0 0 0 4px rgba(255,199,102,.12)}
+.code .c.f{background:rgba(255,255,255,.06)}
+.code input{position:absolute;inset:0;opacity:0;font-size:16px;width:100%;height:100%;border:0;caret-color:transparent}
+.code.shake{animation:shake .4s}@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.msg{min-height:22px;font-size:14.5px;color:var(--away);margin:-6px 0 12px}
+.msg.ok{color:var(--look)}
+.foot{margin-top:auto;padding-top:28px;font-size:13px;color:var(--tx3)}
+.spin{width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(29,20,5,.25);border-top-color:var(--goldink);animation:spin .8s linear infinite}
+.spin.lt{border-color:rgba(255,255,255,.18);border-top-color:var(--gold)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;left:50%;bottom:calc(var(--sab) + 96px);z-index:70;transform:translate(-50%,20px);opacity:0;max-width:calc(100% - 40px);width:max-content;padding:13px 18px;border-radius:16px;background:#1c2542;border:1px solid var(--line2);box-shadow:0 18px 40px -16px #000;font-size:14.5px;font-weight:550;transition:opacity .25s,transform .3s var(--ease);pointer-events:none}
+.toast.in{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (min-width:700px){main{padding-top:14px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="supabase.js"></script>
+<script>
+'use strict';
+/* Bright Gaze · caregiver phone. Pairs with the Tobii by code, controls it live (Supabase Realtime broadcast),
+   records voices and adds photos (private storage via the `gaze` Edge Function). */
+const CFG={url:'https://rewphjtoylteetraxhcx.supabase.co',key:'sb_publishable_OwOsVS_uIwn9XsYLJc1-Rw_XIlSSyEz',
+ legacy:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BoanRveWx0ZWV0cmF4aGN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQyODk1NTMsImV4cCI6MjEwOTg2NTU1M30.VuhUUf3ieRdhbbGiyhQxkwi9r6xmfgi_hgJ7tx8g4-I'};
+(()=>{const c=new URLSearchParams(location.search).get('cloud');if(c&&/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(c))CFG.url=c})();
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const IC={
+ remote:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.2"/>',
+ voices:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21M8.5 21h7"/>',
+ photos:'<rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4.5 4"/>',
+ insights:'<path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/>',
+ eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+ eyeoff:'<path d="M3 3l18 18M10.6 6.1A9.6 9.6 0 0112 6c6 0 9.5 6 9.5 6a17 17 0 01-3 3.6M6.3 7.6A16 16 0 002.5 12S6 18 12 18a9.3 9.3 0 004.4-1.1"/><path d="M9.9 10a3 3 0 004.2 4.2"/>',
+ play:'<path d="M8 5.5v13l10.5-6.5z"/>',pause:'<path d="M8 5.5v13M16 5.5v13"/>',
+ next:'<path d="M6 5.5v13l9-6.5zM18 5.5v13"/>',stop:'<rect x="6.5" y="6.5" width="11" height="11" rx="2.5"/>',
+ home:'<path d="M3.5 11L12 4l8.5 7"/><path d="M6 9.5V20h4.5v-5.5h3V20H18V9.5"/>',
+ spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/>',
+ wave:'<path d="M4 12h1.5M7.5 8v8M11 5v14M14.5 8v8M18 10.5v3M20.5 12H20"/>',
+ speaker:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11"/>',quiet:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/>',
+ mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/>',
+ trash:'<path d="M4.5 7h15M10 11v6M14 11v6M6.5 7l1 12.5h9l1-12.5M9.5 7V4.5h5V7"/>',
+ camera:'<path d="M4 8h3.5L9 5.5h6L16.5 8H20v11H4z"/><circle cx="12" cy="13.2" r="3.4"/>',
+ image:'<rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4.5 4"/>',
+ chev:'<path d="M9.5 5.5L16 12l-6.5 6.5"/>',redo:'<path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4"/>',check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+ wifioff:'<path d="M3 3l18 18M8.5 16.2a5 5 0 017 0M5 12.7a10 10 0 015-2.6M14.6 10.3A10 10 0 0119 12.7M2 9.3a15 15 0 015.3-3.1M12 5a15 15 0 0110 4.3"/>',
+ phone:'<rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M10.5 18.5h3"/>',tablet:'<rect x="3" y="4.5" width="18" height="14" rx="2.5"/><path d="M11 15.5h2"/>',
+ link:'<path d="M10 14a4.5 4.5 0 006.4 0l3-3a4.5 4.5 0 00-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4l1-1"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>'};
+const ic=(n,c='')=>`<svg class="ic ${c}" viewBox="0 0 24 24" aria-hidden="true">${IC[n]||''}</svg>`;
+
+/* ---------- state ---------- */
+function loadSt(){let o={};try{o=JSON.parse(localStorage.getItem('bgp')||'{}')}catch(e){}return Object.assign({token:'',family:'',device:'',channel:'',devices:[],me:'',tab:'remote'},o)}
+const S={st:loadSt(),tobii:null,tobiiAt:0,files:[],backup:null,urls:{},urlAt:0,rt:'off',open:{},feed:[],up:[],keyIdx:0,ch:null,sb:null,lastLoad:0};
+function save(){try{localStorage.setItem('bgp',JSON.stringify(S.st))}catch(e){}}
+function newToken(){const a=new Uint8Array(32);crypto.getRandomValues(a);let s='';for(const b of a)s+=String.fromCharCode(b);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+if(!S.st.token){S.st.token=newToken();save()}
+const paired=()=>!!S.st.family;
+
+/* ---------- network ---------- */
+async function api(a,body={},ms=20000){const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),ms);
+ try{const r=await fetch(CFG.url+'/functions/v1/gaze',{method:'POST',headers:{'content-type':'application/json',apikey:CFG.key},body:JSON.stringify(Object.assign({a,token:S.st.token},body)),signal:ctl.signal});
+  let j={};try{j=await r.json()}catch(e){}
+  if(!r.ok){const e=new Error(j.error||'http');e.code=j.error||'http';throw e}return j}
+ catch(e){if(!e.code)e.code='offline';if(e.code==='unpaired'&&paired()&&!/^pair_/.test(a))lost();throw e}finally{clearTimeout(to)}}
+const ERR={offline:'No connection right now. It will work again when your phone is back online.',wrong_code:'That code didn’t match. Check the numbers on the Tobii and try again.',
+ slow_down:'Too many tries. Wait a few minutes, then try again.',other_family:'That Tobii is paired with another family. Unpair it there first.',unpaired:'This phone is no longer paired.',too_big:'That file is too large.',
+ storage:'The cloud did not answer. Try again in a minute.',server:'The cloud had a problem. Try again in a minute.'};
+const errText=c=>ERR[c]||'Something went wrong. Try again in a minute.';
+let toastT=0;function toast(t,ms=2800){const el=$('#toast');el.textContent=t;el.classList.add('in');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('in'),ms)}
+const buzz=()=>{try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}};
+function applyInfo(h){if(!h||!h.family)return;const ch=S.st.channel;Object.assign(S.st,{family:h.family,device:h.device,channel:h.channel,devices:h.devices||[]});save();if(ch!==h.channel)live(true)}
+function lost(){unlive();Object.assign(S.st,{family:'',device:'',channel:'',devices:[],token:newToken()});save();S.files=[];S.backup=null;S.tobii=null;render();toast('This phone was unpaired.')}
+
+/* ---------- realtime ---------- */
+function live(force){if(!paired()||!S.st.channel||typeof supabase==='undefined')return;if(S.ch&&!force)return;unlive();
+ try{if(!S.sb)S.sb=supabase.createClient(CFG.url,S.keyIdx?CFG.legacy:CFG.key,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+  const ch=S.sb.channel('bg-'+S.st.channel,{config:{broadcast:{self:false}}});S.ch=ch;S.rt='connecting';
+  ch.on('broadcast',{event:'status'},m=>{S.tobii=Object.assign({},S.tobii&&!(m.payload||{}).acts?{acts:S.tobii.acts}:{},m.payload||{});S.tobiiAt=Date.now();paintNow()})
+   .on('broadcast',{event:'evt'},m=>{const e=m.payload||{};onEvt(e)});
+  ch.subscribe(s=>{if(S.ch!==ch)return;S.rt=s==='SUBSCRIBED'?'live':s==='CHANNEL_ERROR'||s==='TIMED_OUT'?'error':'off';
+   if(s==='SUBSCRIBED'){S.rtFail=0;hi()}if(s==='CHANNEL_ERROR'){S.rtFail=(S.rtFail||0)+1;if(S.rtFail===3&&!S.keyIdx){S.keyIdx=1;S.sb=null;setTimeout(()=>live(true),800)}}paintConn()})}catch(e){S.rt='error'}}
+function unlive(){if(S.ch&&S.sb){try{S.sb.removeChannel(S.ch)}catch(e){}}S.ch=null;S.rt='off'}
+function hi(){if(S.ch&&S.rt==='live')try{S.ch.send({type:'broadcast',event:'hi',payload:{at:Date.now()}})}catch(e){}}
+function cmd(k,x={}){buzz();if(!S.ch||S.rt!=='live'){toast(navigator.onLine===false?errText('offline'):'Connecting to the Tobii… try again in a moment.');live();return false}
+ try{S.ch.send({type:'broadcast',event:'cmd',payload:Object.assign({k,at:Date.now()},x)})}catch(e){}return true}
+const tobiiOn=()=>S.tobii&&Date.now()-S.tobiiAt<12000;
+function onEvt(e){const t=new Date(e.at||Date.now()).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});let s='';
+ if(e.k==='scene'&&e.title)s=e.title==='Playroom'?'Back in the playroom':e.title==='Resting'?'Resting':e.title+' started';else if(e.k==='away')s='She looked away; calling her back';else if(e.k==='back')s='She’s looking again';
+ else if(e.k==='end')s='Session ended'+(e.s?`, ${fmtDur(e.s.dur)}, ${e.s.hits} look${e.s.hits===1?'':'s'}`:'');else if(e.k==='synced'){loadAll(true);return}
+ if(!s)return;S.feed.unshift({t,s});S.feed=S.feed.slice(0,5);const f=$('#feed');if(f)f.innerHTML=feedHTML()}
+setInterval(()=>{if(document.visibilityState==='visible')hi();paintNow();paintConn()},20000);
+setInterval(()=>{paintNow();paintConn()},3000);
+
+/* ---------- data ---------- */
+async function loadAll(quiet){if(!paired())return;try{const h=await api('hello',{label:S.st.me?S.st.me+'’s phone':undefined});applyInfo(h);
+  const [c,b]=await Promise.all([api('changes',{since:0}),api('backup_load')]);
+  S.files=(c.files||[]).filter(f=>f.status==='ready');S.backup=b.backup&&b.backup.data||null;S.backupAt=b.backup&&b.backup.updated_at;S.lastLoad=Date.now();S.urlAt=0;
+  if(!S.ch)live();if(S.st.tab!=='remote'||!quiet)show(S.st.tab,true);else paintActs()}
+ catch(e){if(!quiet&&e.code!=='unpaired')toast(errText(e.code))}}
+async function urls(ids){const now=Date.now();if(now-S.urlAt>600000){S.urls={};S.urlAt=now}const need=ids.filter(i=>!S.urls[i]);
+ for(let i=0;i<need.length;i+=100){try{const r=await api('down_url',{ids:need.slice(i,i+100)});Object.assign(S.urls,r.urls||{})}catch(e){}}return S.urls}
+async function upload(kind,blob,meta){const mime=(blob.type||(kind==='photo'?'image/jpeg':'audio/wav')).split(';')[0];
+ const u=await api('up_url',Object.assign({kind,mime,size:blob.size},meta));
+ const r=await fetch(u.url,{method:'PUT',headers:{'content-type':mime,'x-upsert':'true'},body:blob});if(!r.ok){const e=new Error('upload');e.code='storage';throw e}
+ await api('up_done',{id:u.id});return u.id}
+
+/* ---------- shell ---------- */
+const TABS=[['remote','Remote'],['voices','Voices'],['photos','Photos'],['insights','Insights']];
+function render(){const R=$('#root');if(!paired()){R.innerHTML=pairHTML();bindPair();return}
+ R.innerHTML=`<header class="top" id="top"><div class="orb" aria-hidden="true"></div><div class="brand"><b>Bright Gaze</b><span>Bright Wins Lab</span></div><span class="conn" id="conn"><i></i><span>…</span></span><button class="gear" id="gear" aria-label="Settings">${ic('gear')}</button></header>
+ <main id="main"></main><nav class="tabs">${TABS.map(([k,n])=>`<button data-tab="${k}" class="${S.st.tab===k?'on':''}">${ic(k)}<span>${n}</span></button>`).join('')}</nav>`;
+ $$('.tabs button').forEach(b=>b.onclick=()=>show(b.dataset.tab));$('#gear').onclick=settings;
+ addEventListener('scroll',()=>{const t=$('#top');if(t)t.classList.toggle('scrolled',scrollY>6)},{passive:true});
+ show(S.st.tab||'remote',true);paintConn()}
+function show(tab,keep){if(!TABS.find(t=>t[0]===tab))tab='remote';const changed=S.st.tab!==tab;S.st.tab=tab;save();$$('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+ const M=$('#main');if(!M)return;const y=scrollY;M.innerHTML=`<div class="view">${V[tab]()}</div>`;(B[tab]||(()=>{}))();if(changed)scrollTo(0,0);else if(keep)scrollTo(0,y)}
+function paintConn(){const c=$('#conn');if(!c)return;let cls='off',t='Offline';
+ if(navigator.onLine===false){cls='off';t='No internet'}else if(S.rt!=='live'){cls='wait';t='Connecting'}else if(tobiiOn()){cls='on';t='Tobii live'}else{cls='wait';t='Tobii asleep'}
+ c.className='conn '+cls;c.lastElementChild.textContent=t}
+
+/* ---------- Remote ---------- */
+const fmtT=s=>{s=Math.max(0,Math.round(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const fmtDur=s=>{s=Math.round(s||0);return s<60?s+' s':Math.round(s/6)/10+' min'};
+function acts(){return(S.tobii&&S.tobii.acts)||(S.backup&&S.backup.acts)||[]}
+const herName=()=>((S.tobii&&S.tobii.name)||(S.backup&&S.backup.settings&&S.backup.settings.name)||'').trim();
+const V={},B={};
+V.remote=()=>{const nm=herName();const off=navigator.onLine===false;
+ return `${off?`<div class="banner">${ic('wifioff')}<div>Your phone is offline. The Tobii keeps playing; controls work again when you reconnect.</div></div>`:''}
+ <section class="now" id="now"><div class="where"><span id="nWhere">On her screen</span><span class="timer hide" id="nTime">0:00</span></div><div class="title" id="nTitle">Looking for the Tobii…</div><div class="sub" id="nSub">&nbsp;</div>
+  <div class="gz"><div class="eye" id="nEye">${ic('eye')}</div><div><b id="nLook">—</b><span id="nLook2">&nbsp;</span></div><div class="nums" id="nNums"></div></div></section>
+ <div class="ctl"><button class="b gold" id="bPause">${ic('pause')}<span>Pause</span></button><button class="b col" id="bNext" aria-label="Next">${ic('next')}<span>Next</span></button><button class="b col" id="bEnd" aria-label="End">${ic('stop')}<span>End</span></button></div>
+ <div class="say"><button class="b" id="bName">${ic('wave')}<span>${nm?'Say '+esc(nm):'Say her name'}</span></button><button class="b" id="bLook">${ic('wave')}<span>“Look here!”</span></button></div>
+ <h2>Start</h2><div class="row2" style="margin-top:0"><button class="b" id="bHome">${ic('home')}<span>Playroom</span></button><button class="b" id="bStart">${ic('spark')}<span>Session</span></button></div>
+ <h2>Play one activity</h2><div class="acts" id="acts">${actsHTML()}</div>
+ <h2>Volume</h2><div class="vol">${ic('quiet')}<input type="range" id="vol" min="0.1" max="1" step="0.05" value="${(S.tobii&&S.tobii.vol)||(S.backup&&S.backup.settings&&S.backup.settings.volume)||.5}" aria-label="Volume">${ic('speaker')}</div>
+ <h2>Moments <small>while this screen is open</small></h2><div class="feed" id="feed">${feedHTML()}</div>`};
+function feedHTML(){return S.feed.length?S.feed.map(f=>`<div><span>${esc(f.s)}</span><time>${f.t}</time></div>`).join(''):'<div><span>Nothing yet. Moments appear here as she plays.</span></div>'}
+function actsHTML(){const L=acts(),th=(S.backup&&S.backup.thumbs)||{},cur=S.tobii&&S.tobii.scene;
+ if(!L.length)return `<div class="empty" style="grid-column:1/-1">${ic('remote')}<div>Activities appear once the Tobii has synced.</div></div>`;
+ return L.map(a=>`<button class="act${cur===a.id?' on':''}${a.on===false?' off':''}" data-act="${esc(a.id)}" style="--hue:${esc(a.hue||'#ffc766')}"><div class="art" ${th[a.id]?`style="background-image:url('${th[a.id]}')"`:''}></div><div class="nm"><span>${esc(a.title)}</span>${cur===a.id?'<span class="playing">Playing</span>':''}</div></button>`).join('')}
+function paintActs(){const el=$('#acts');if(el){el.innerHTML=actsHTML();$$('[data-act]',el).forEach(b=>b.onclick=()=>{if(cmd('play',{id:b.dataset.act}))toast('Starting '+b.querySelector('.nm span').textContent)})}}
+B.remote=()=>{$('#bPause').onclick=()=>{const p=S.tobii&&S.tobii.paused;if(cmd(p?'resume':'pause')&&S.tobii){S.tobii.paused=!p;paintNow()}};
+ $('#bNext').onclick=()=>cmd('next');$('#bEnd').onclick=()=>{if(cmd('end'))toast('Ending')};
+ $('#bName').onclick=()=>cmd('say',{what:'name'});$('#bLook').onclick=()=>cmd('say',{what:'look'});
+ $('#bHome').onclick=()=>{if(cmd('home'))toast('Opening the playroom')};$('#bStart').onclick=()=>{if(cmd('start'))toast('Starting a session')};
+ const v=$('#vol');const pv=()=>v.style.setProperty('--p',((v.value-.1)/.9*100).toFixed(0)+'%');pv();let vt=0;
+ v.oninput=()=>{pv();S.volTouch=Date.now();clearTimeout(vt);vt=setTimeout(()=>cmd('volume',{v:+v.value}),180)};
+ paintActs();paintNow()};
+function paintNow(){const n=$('#now');if(!n)return;const T=S.tobii,on=tobiiOn();
+ const set=(id,h)=>{const e=$('#'+id);if(e&&e.innerHTML!==h)e.innerHTML=h};
+ n.classList.toggle('asleep',!on);
+ if(!on){n.style.setProperty('--hue','#6f7b97');set('nWhere','Tobii');$('#nTime').classList.add('hide');
+  set('nTitle',S.rt==='live'?'Waiting for the Tobii':'Connecting…');set('nSub',S.rt==='live'?'Open Bright Gaze on the Tobii and connect it to Wi-Fi.':'Reaching the family channel.');
+  $('#nEye').className='eye';set('nLook','—');set('nLook2','&nbsp;');set('nNums','');return}
+ n.style.setProperty('--hue',T.hue||'#ffc766');
+ const mode=T.mode,playing=mode==='play';let where='On her screen',sub='';
+ if(mode==='console'){where='Caregiver screen open';sub='Someone is using the caregiver screen on the Tobii.'}
+ else if(T.sess){sub=`Session, ${String(T.sess.stage||'').toLowerCase()} (${T.sess.i+1} of ${T.sess.n})`}else if(T.scene==='home')sub='She chooses by looking';else if(T.free&&playing)sub='Free play';
+ if(T.paused){sub='Paused'+(sub?', '+sub.charAt(0).toLowerCase()+sub.slice(1):'')}
+ if(T.help)sub='She stopped looking; it settled into the quiet corner.';
+ set('nWhere',esc(where));set('nTitle',esc(mode==='console'?'Paused':T.title||'Resting'));set('nSub',esc(sub)||'&nbsp;');
+ const tm=$('#nTime');if(T.rec){tm.classList.remove('hide');tm.textContent=fmtT(T.rec.t+(Date.now()-T.t)/1000)}else tm.classList.add('hide');
+ const e=$('#nEye');if(T.looking===true){e.className='eye look';e.innerHTML=ic('eye');set('nLook','Looking');set('nLook2',T.calling?'Back with us':'Her eyes are on the screen')}
+ else if(T.looking===false){e.className='eye away';e.innerHTML=ic('eyeoff');set('nLook','Looked away');set('nLook2',T.away?`${T.away} s`+(T.calling?', calling her':''):'Just now')}
+ else{e.className='eye';e.innerHTML=ic('eye');set('nLook',T.paused?'Paused':'Not playing');set('nLook2','&nbsp;')}
+ set('nNums',T.rec?`<div><b>${T.rec.hits}</b><span>looks</span></div><div><b>${T.rec.away}</b><span>away</span></div>`:'');
+ const nb=$('#bName');if(nb){const h=`${ic('wave')}<span>${T.name?'Say '+esc(T.name):'Say her name'}</span>`;if(nb.innerHTML!==h)nb.innerHTML=h}
+ const bp=$('#bPause');if(bp){const h=T.paused?`${ic('play')}<span>Resume</span>`:`${ic('pause')}<span>Pause</span>`;if(bp.innerHTML!==h)bp.innerHTML=h;bp.disabled=!playing}
+ const v=$('#vol');if(v&&T.vol&&Date.now()-(S.volTouch||0)>4000&&Math.abs(v.value-T.vol)>.01){v.value=T.vol;v.style.setProperty('--p',((T.vol-.1)/.9*100).toFixed(0)+'%')}
+ const cur=$('.act.on');if((cur&&cur.dataset.act)!==(T.scene||undefined))paintActs()}
+
+/* ---------- Voices ---------- */
+const FAMILY=[['name','Her name','Say her name warmly. Used when calling her back.'],['look','“Look here!”','A short, warm line.'],['call2','Second call','A different line, like “Come see!”'],['warm','Warm lines','Short lines for Living Photo, like “Hi sweetie!”']];
+const ANIMALS=['lamb','bunny','cat','dog','duck','chick','cow','pig','frog','elephant'];
+function vFiles(cat){return S.files.filter(f=>f.kind==='voice'&&f.cat===cat).sort((a,b)=>a.rev-b.rev)}
+function vRow(cat,label,hint){const L=vFiles(cat),open=S.open[cat];
+ return `<div class="vr" data-cat="${esc(cat)}"><div class="vh"><div class="lbl"><b>${esc(label)}</b><span class="${L.length?'fam':''}">${L.length?(L.length===1?'Your recording':L.length+' recordings'):esc(hint||'Device voice')}</span></div>
+  ${L.length?`<button class="ib play" data-pl="${esc(L[L.length-1].id)}" aria-label="Play">${ic('play')}</button>`:''}<button class="ib mic" data-rec="${esc(cat)}" data-lbl="${esc(label)}" aria-label="Record">${ic('mic')}</button>
+  ${L.length?`<button class="ib" data-more aria-label="Show recordings" style="background:none;width:34px">${ic('chev')}</button>`:''}</div>
+  ${open&&L.length?`<div class="vx">${L.map(f=>`<span class="chip">${esc(shortName(f))}<button data-pl="${esc(f.id)}" aria-label="Play">${ic('play')}</button><button data-del="${esc(f.id)}" aria-label="Delete">${ic('trash')}</button></span>`).join('')}${/^say_/.test(cat)?`<button class="chip" data-hear="${esc(cat.slice(4))}" style="padding:0 14px;color:var(--gold)">Hear it on the Tobii</button>`:''}</div>`:''}</div>`}
+function shortName(f){const d=new Date(f.created_at);return (f.name||'').split(' · ')[0].slice(0,18)+' '+d.toLocaleDateString([],{month:'short',day:'numeric'})}
+V.voices=()=>{const W=(S.backup&&S.backup.words)||[];const groups={};for(const w of W)(groups[w.group||'Other']=groups[w.group||'Other']||[]).push(w);
+ const rec=W.filter(w=>vFiles('say_'+w.key).length).length;
+ return `<h1>Voices</h1><p class="lede">Her family’s voices play first. Anything you haven’t recorded uses the Tobii’s own voice. Keep each one short and warm.</p>
+ <h2>Family voices</h2><div class="list">${FAMILY.map(([k,n,h])=>vRow(k,n,h)).join('')}</div>
+ <h2>Words and phrases <small>${W.length?rec+' of '+W.length+' in your voice':''}</small></h2>
+ ${W.length?Object.keys(groups).map((g,i)=>`<details class="grp" ${i===0||S.open['g:'+g]?'open':''} data-g="${esc(g)}"><summary>${ic('chev')}<span>${esc(g)}</span><small>${groups[g].filter(w=>vFiles('say_'+w.key).length).length} of ${groups[g].length}</small></summary><div class="list">${groups[g].map(w=>vRow('say_'+w.key,w.label,'Device voice')).join('')}</div></details>`).join('')
+  :`<div class="empty">${ic('voices')}<div>The phrase list arrives after the Tobii syncs once. Open the caregiver screen on the Tobii and choose Phone, then Sync now.</div></div>`}
+ <h2>Animal sounds <small>optional</small></h2><div class="list">${ANIMALS.map(n=>vRow('an_'+n,n[0].toUpperCase()+n.slice(1),'Built-in sound')).join('')}</div>`};
+B.voices=()=>{const M=$('#main');
+ M.onclick=e=>{const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.pl!==undefined){playVoice(t.dataset.pl,t);return}
+  if(t.dataset.rec!==undefined){recSheet(t.dataset.rec,t.dataset.lbl);return}
+  if(t.dataset.more!==undefined){const c=t.closest('.vr').dataset.cat;S.open[c]=!S.open[c];show('voices',true);return}
+  if(t.dataset.del!==undefined){delFile(t.dataset.del,'Delete this recording?');return}
+  if(t.dataset.hear!==undefined){if(cmd('say',{what:'key',key:t.dataset.hear}))toast('Playing on the Tobii');return}};
+ $$('details.grp').forEach(d=>d.ontoggle=()=>{S.open['g:'+d.dataset.g]=d.open});
+ urls(S.files.filter(f=>f.kind==='voice').map(f=>f.id))};
+let playing=null;
+async function playVoice(id,btn){if(playing){try{playing.pause()}catch(e){}playing=null}
+ let u=S.urls[id];if(!u){await urls([id]);u=S.urls[id]}if(!u){toast(errText('offline'));return}
+ const a=new Audio(u);playing=a;btn&&btn.classList.add('on');a.onended=a.onpause=()=>btn&&btn.classList.remove('on');a.play().catch(()=>toast('Tap play again to listen.'))}
+async function delFile(id,q){if(!confirm(q))return;try{await api('del_file',{ids:[id]});S.files=S.files.filter(f=>f.id!==id);cmd('sync');show(S.st.tab,true);toast('Deleted')}catch(e){toast(errText(e.code))}}
+
+/* ---------- recording: MediaRecorder, then a clean 24 kHz mono WAV the Tobii's Firefox always decodes ---------- */
+let AC=null;
+function sheet(html,onClose){const sc=document.createElement('div');sc.className='scrim';const sh=document.createElement('div');sh.className='sheet';sh.setAttribute('role','dialog');sh.innerHTML='<div class="grab"></div>'+html;
+ document.body.append(sc,sh);requestAnimationFrame(()=>{sc.classList.add('in');sh.classList.add('in')});
+ const close=()=>{sc.classList.remove('in');sh.classList.remove('in');setTimeout(()=>{sc.remove();sh.remove()},400);onClose&&onClose()};sc.onclick=close;
+ let y0=null;sh.addEventListener('touchstart',e=>{if(sh.scrollTop<=0)y0=e.touches[0].clientY},{passive:true});sh.addEventListener('touchend',e=>{if(y0!=null&&e.changedTouches[0].clientY-y0>90)close();y0=null},{passive:true});
+ return{sh,close}}
+function recSheet(cat,label){let st=null,mr=null,chunks=[],t0=0,raf=0,wav=null,orig=null,peaks=null,timer=0,url=null,pa=null;
+ const {sh,close}=sheet(`<h3>${esc(label)}</h3><p class="hint">${cat==='name'?'Say her name the way you call her at home.':/^an_/.test(cat)?'Make the sound, or play a real one near the phone.':'Say it warmly, as if you were right beside her.'}</p>
+  <div class="recbox"><button class="recbtn" id="rb" aria-label="Record">${ic('mic')}</button><div class="rect" id="rt">Tap to record</div><canvas class="wave hide" id="wv" width="600" height="152"></canvas>
+  <div class="acts3 hide" id="ra"><button class="b sm" id="rp">${ic('play')}<span>Play</span></button><button class="b sm" id="rr">${ic('redo')}<span>Again</span></button><button class="b sm gold" id="rs">${ic('check')}<span>Save</span></button></div></div>`,()=>{stopAll();if(url)URL.revokeObjectURL(url)});
+ const rb=$('#rb',sh),rt=$('#rt',sh),wv=$('#wv',sh),ra=$('#ra',sh);
+ const stopAll=()=>{cancelAnimationFrame(raf);clearTimeout(timer);try{mr&&mr.state!=='inactive'&&mr.stop()}catch(e){}if(st)st.getTracks().forEach(t=>t.stop());st=null;if(pa)try{pa.pause()}catch(e){}};
+ async function start(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();await AC.resume()}catch(e){}
+  try{st=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}})}
+  catch(e){rt.textContent='The microphone is blocked. Allow it for this page in your phone’s settings.';return}
+  const types=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus'];const mt=window.MediaRecorder&&MediaRecorder.isTypeSupported?types.find(t=>MediaRecorder.isTypeSupported(t)):'';
+  try{mr=new MediaRecorder(st,mt?{mimeType:mt}:undefined)}catch(e){rt.textContent='Recording is not supported in this browser.';return}
+  chunks=[];mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};mr.onstop=done;mr.start();t0=performance.now();
+  let an=null,buf=null;try{const src=AC.createMediaStreamSource(st);an=AC.createAnalyser();an.fftSize=1024;src.connect(an);buf=new Float32Array(an.fftSize)}catch(e){}
+  rb.classList.add('live');rb.innerHTML=ic('stop');wv.classList.add('hide');ra.classList.add('hide');
+  const loop=()=>{const s=(performance.now()-t0)/1000;rt.textContent=s.toFixed(1)+' s · tap to stop';if(an){an.getFloatTimeDomainData(buf);let m=0;for(const v of buf)m=Math.max(m,Math.abs(v));rb.style.setProperty('--lvl',Math.min(1,m*1.6).toFixed(2))}raf=requestAnimationFrame(loop)};loop();
+  timer=setTimeout(()=>{if(mr&&mr.state==='recording')mr.stop()},10000);buzz()}
+ async function done(){cancelAnimationFrame(raf);clearTimeout(timer);if(st)st.getTracks().forEach(t=>t.stop());st=null;rb.classList.remove('live');rb.style.removeProperty('--lvl');rb.innerHTML=ic('mic');
+  orig=new Blob(chunks,{type:(mr&&mr.mimeType)||'audio/mp4'});rt.textContent='Preparing…';wav=null;
+  try{const ab=await orig.arrayBuffer();const au=await new Promise((res,rej)=>{const p=AC.decodeAudioData(ab,res,rej);if(p&&p.then)p.then(res,rej)});const r=toWav(au);wav=r.blob;peaks=r.peaks}catch(e){wav=null;peaks=null}
+  const out=wav||orig;if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(out);
+  if(wav&&peaks&&peaks.dur<.15){rt.textContent='That was very quiet. Try again a little closer.';return}
+  rt.textContent=(peaks?peaks.dur.toFixed(1)+' s':'Ready')+' · listen, then save';drawWave(wv,peaks);wv.classList.remove('hide');ra.classList.remove('hide')}
+ rb.onclick=()=>{if(mr&&mr.state==='recording'){mr.stop();return}start()};
+ $('#rp',sh).onclick=()=>{if(!url)return;if(pa)try{pa.pause()}catch(e){}pa=new Audio(url);pa.play().catch(()=>{})};
+ $('#rr',sh).onclick=()=>{ra.classList.add('hide');wv.classList.add('hide');start()};
+ $('#rs',sh).onclick=async e=>{const b=e.currentTarget;const out=wav||orig;if(!out)return;b.disabled=true;b.innerHTML='<i class="spin"></i>';
+  try{const who=(S.st.me||'Family').slice(0,24);const id=await upload('voice',out,{cat,name:who+' · '+new Date().toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+(wav?'':' · '+(out.type||'').split(';')[0])});
+   S.files.push({id,kind:'voice',cat,name:who,mime:out.type,status:'ready',rev:1e15,created_at:new Date().toISOString()});cmd('sync');close();show('voices',true);toast('Saved. It plays on the Tobii in a moment.')}
+  catch(err){b.disabled=false;b.innerHTML=ic('check')+'<span>Save</span>';toast(errText(err.code))}};
+ start()}
+function toWav(au){const sr=au.sampleRate,n=au.length,ch=au.numberOfChannels;const m=new Float32Array(n);for(let c=0;c<ch;c++){const d=au.getChannelData(c);for(let i=0;i<n;i++)m[i]+=d[i]/ch}
+ let pk=0;for(let i=0;i<n;i++)pk=Math.max(pk,Math.abs(m[i]));const th=Math.max(.012,pk*.07);let a=0,b=n-1;while(a<n&&Math.abs(m[a])<th)a++;while(b>a&&Math.abs(m[b])<th)b--;
+ a=Math.max(0,a-Math.round(sr*.12));b=Math.min(n-1,b+Math.round(sr*.28));const R=24000,step=sr/R,len=Math.max(1,Math.floor((b-a)/step)),g=pk>0?Math.min(4,.89/pk):1;
+ const out=new Int16Array(len),fade=Math.round(R*.012);for(let i=0;i<len;i++){const x=a+i*step,i0=Math.floor(x),f=x-i0,v=(m[i0]||0)*(1-f)+(m[i0+1]||0)*f;let s=v*g;if(i<fade)s*=i/fade;if(i>len-fade)s*=(len-i)/fade;out[i]=Math.max(-32767,Math.min(32767,Math.round(s*32767)))}
+ const buf=new ArrayBuffer(44+len*2),dv=new DataView(buf),w=(o,s)=>{for(let i=0;i<s.length;i++)dv.setUint8(o+i,s.charCodeAt(i))};
+ w(0,'RIFF');dv.setUint32(4,36+len*2,true);w(8,'WAVE');w(12,'fmt ');dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,1,true);dv.setUint32(24,R,true);dv.setUint32(28,R*2,true);dv.setUint16(32,2,true);dv.setUint16(34,16,true);w(36,'data');dv.setUint32(40,len*2,true);
+ new Int16Array(buf,44).set(out);const P=[],k=Math.max(1,Math.floor(len/120));for(let i=0;i<len;i+=k){let mx=0;for(let j=i;j<Math.min(len,i+k);j++)mx=Math.max(mx,Math.abs(out[j]));P.push(mx/32767)}P.dur=len/R;
+ return{blob:new Blob([buf],{type:'audio/wav'}),peaks:P}}
+function drawWave(cv,P){const c=cv.getContext('2d'),W=cv.width,H=cv.height;c.clearRect(0,0,W,H);if(!P||!P.length)return;const bw=W/P.length;
+ const g=c.createLinearGradient(0,0,W,0);g.addColorStop(0,'#ffd98a');g.addColorStop(1,'#ffac4a');c.fillStyle=g;
+ P.forEach((p,i)=>{const h=Math.max(4,p*H*.92);const x=i*bw+bw*.2,w=Math.max(2,bw*.6);c.beginPath();c.roundRect?c.roundRect(x,(H-h)/2,w,h,w/2):c.rect(x,(H-h)/2,w,h);c.fill()})}
+
+/* ---------- Photos ---------- */
+V.photos=()=>{const P=S.files.filter(f=>f.kind==='photo').sort((a,b)=>b.rev-a.rev);
+ return `<h1>Photos</h1><p class="lede">Faces of the people and pets she loves. They appear in Living Photo on the Tobii.</p>
+ <div class="row2"><label class="b gold">${ic('camera')}<span>Take a photo</span><input type="file" accept="image/*" capture="environment" id="pCam" hidden></label><label class="b">${ic('image')}<span>Choose photos</span><input type="file" accept="image/*" multiple id="pLib" hidden></label></div>
+ ${P.length||S.up.length?`<div class="pgrid" id="pg">${S.up.map(()=>`<div class="ph up"></div>`).join('')}${P.map(f=>`<button class="ph" data-ph="${esc(f.id)}" aria-label="Photo"><img alt="" data-src="${esc(f.id)}"></button>`).join('')}</div>`
+  :`<div class="empty">${ic('photos')}<div>No photos yet. Take one now, or choose a few from your library.</div></div>`}
+ <p class="note">${P.length} photo${P.length===1?'':'s'}. Photos are resized on this phone before they are sent.</p>`};
+B.photos=async()=>{$('#pCam').onchange=e=>addPhotos(e.target.files);$('#pLib').onchange=e=>addPhotos(e.target.files);
+ $$('[data-ph]').forEach(b=>b.onclick=()=>viewer(b.dataset.ph));
+ const ids=S.files.filter(f=>f.kind==='photo').map(f=>f.id);const U=await urls(ids);$$('img[data-src]').forEach(im=>{const u=U[im.dataset.src];if(u&&!im.src){im.onload=()=>im.classList.add('ok');im.src=u}})};
+async function shrink(file){const url=URL.createObjectURL(file);try{const im=new Image();im.src=url;await im.decode();let w=im.naturalWidth,h=im.naturalHeight;const s=Math.min(1,1600/Math.max(w,h));w=Math.round(w*s);h=Math.round(h*s);
+ const cv=document.createElement('canvas');cv.width=w;cv.height=h;const c=cv.getContext('2d');c.imageSmoothingQuality='high';c.drawImage(im,0,0,w,h);return await new Promise((res,rej)=>cv.toBlob(b=>b?res(b):rej(new Error('jpeg')),'image/jpeg',.86))}finally{URL.revokeObjectURL(url)}}
+async function addPhotos(fl){const files=[...(fl||[])].filter(f=>/^image\//.test(f.type)||/\.(jpe?g|png|heic|webp)$/i.test(f.name));if(!files.length)return;
+ S.up=files.map(()=>1);show('photos',true);let ok=0,err=null;
+ for(const f of files){try{const b=await shrink(f);const id=await upload('photo',b,{name:(S.st.me||'Family')+' · '+new Date().toLocaleDateString([],{month:'short',day:'numeric'})});
+   S.files.push({id,kind:'photo',status:'ready',rev:1e15+ok,created_at:new Date().toISOString()});ok++}catch(e){err=e.code||'server'}S.up.pop();if(S.st.tab==='photos')show('photos',true)}
+ S.up=[];if(ok)cmd('sync');show('photos',true);toast(err?(ok?`${ok} sent. `:'')+errText(err):ok===1?'Photo sent to the Tobii':`${ok} photos sent to the Tobii`)}
+function viewer(id){const v=document.createElement('div');v.className='viewer';v.innerHTML=`<img alt="" src="${esc(S.urls[id]||'')}"><div class="row2"><button class="b" id="vx">${ic('x')}<span>Close</span></button><button class="b" id="vd" style="color:#ffb3a8">${ic('trash')}<span>Delete</span></button></div>`;
+ document.body.appendChild(v);requestAnimationFrame(()=>v.classList.add('in'));const close=()=>{v.classList.remove('in');setTimeout(()=>v.remove(),260)};
+ $('#vx',v).onclick=close;v.onclick=e=>{if(e.target===v)close()};$('#vd',v).onclick=async()=>{close();await delFile(id,'Delete this photo from the Tobii and the cloud?')}}
+
+/* ---------- Insights ---------- */
+V.insights=()=>{const b=S.backup;const ss=((b&&b.sessions)||[]).filter(s=>s&&s.start).sort((x,y)=>x.start-y.start);
+ if(!ss.length)return `<h1>Insights</h1><p class="lede">After her first session you’ll see how long she looked, and which activities hold her attention.</p><div class="empty">${ic('insights')}<div>No sessions yet.</div></div>`;
+ const wk=Date.now()-7*864e5,W=ss.filter(s=>s.start>=wk),sum=(L,k)=>L.reduce((a,s)=>a+(+s[k]||0),0);
+ const actT=id=>{const a=((b&&b.acts)||[]).find(x=>x.id===id);return a?a.title:({home:'Playroom',quiet:'Quiet corner',goodbye:'Goodbye'})[id]||id};
+ const last=ss.slice(-12),mx=Math.max(1,...last.map(s=>(s.look||0)/60));
+ const bars=last.map((s,i)=>{const m=(s.look||0)/60,h=Math.max(4,m/mx*120),x=12+i*(296/last.length),w=Math.min(18,296/last.length*.55);return `<rect x="${x.toFixed(1)}" y="${(140-h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="${(w/2).toFixed(1)}" fill="url(#bg)"/>`}).join('');
+ const per={};ss.forEach(s=>(s.scenes||[]).forEach(x=>{if(['home','quiet','goodbye'].includes(x.id))return;per[x.id]=per[x.id]||{look:0,dur:0};per[x.id].look+=+x.look||0;per[x.id].dur+=+x.dur||0}));
+ const fav=Object.entries(per).filter(([,v])=>v.dur>=10).map(([k,v])=>[k,v.look/v.dur*60]).sort((a,b)=>b[1]-a[1]).slice(0,6),fm=Math.max(1,...fav.map(f=>f[1]));
+ const hue=id=>(((b&&b.acts)||[]).find(x=>x.id===id)||{}).hue||'#ffc766';
+ return `<h1>Insights</h1><p class="lede">From the Tobii’s last sync${S.backupAt?', '+ago(Date.parse(S.backupAt)):''}. Based on where the pointer was, so treat it as a guide.</p>
+ <div class="tiles"><div class="tile"><b>${W.length}</b><span>sessions this week</span></div><div class="tile"><b>${(sum(W,'look')/60).toFixed(1)}</b><span>minutes looking this week</span></div>
+  <div class="tile"><b>${sum(W,'hits')}</b><span>successful looks this week</span></div><div class="tile"><b>${W.reduce((a,s)=>a+((s.lapses||[]).length),0)}</b><span>look-aways this week</span></div></div>
+ <h2>Minutes looking <small>last ${last.length} sessions</small></h2><div class="chart"><svg viewBox="0 0 320 150" role="img" aria-label="Minutes looking per session"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#ff9f45" stop-opacity=".5"/></linearGradient></defs><line x1="6" y1="141" x2="314" y2="141" stroke="rgba(255,255,255,.12)" stroke-width="1.5"/>${bars}</svg></div>
+ ${fav.length?`<h2>What holds her look <small>seconds per minute</small></h2><div class="list" style="padding:6px 16px">${fav.map(([k,v])=>`<div class="hbar" style="--hue:${esc(hue(k))};--w:${(v/fm*100).toFixed(0)}%"><span>${esc(actT(k))}</span><b>${Math.round(v)}</b><i></i></div>`).join('')}</div>`:''}
+ <h2>Recent sessions</h2><div class="list">${ss.slice(-8).reverse().map(s=>{const d=new Date(s.start);const sc=[...new Set((s.scenes||[]).map(x=>x.id).filter(x=>!['home','quiet','goodbye'].includes(x)))].map(actT);
+  return `<div class="ses"><div class="d"><b>${d.getDate()}</b><span>${d.toLocaleDateString([],{month:'short'})}</span></div><div class="m"><b>${s.free?'Free play':'Session'} at ${d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}</b><span>${esc(sc.join(', ')||'—')}</span></div><div class="r"><b>${fmtDur(s.dur)}</b>${s.hits||0} looks</div></div>`}).join('')}</div>`};
+const ago=t=>{if(!t)return'never';const s=Math.round((Date.now()-t)/1000);return s<60?'just now':s<3600?Math.round(s/60)+' min ago':s<86400?Math.round(s/3600)+' h ago':new Date(t).toLocaleDateString()};
+
+/* ---------- Settings ---------- */
+function settings(){const D=S.st.devices||[];
+ const {sh,close}=sheet(`<h3>Settings</h3>
+  <div class="field"><label for="me">Your name</label><input class="txt" id="me" maxlength="24" placeholder="For example, Mom" value="${esc(S.st.me||'')}" autocomplete="off"><span class="note" style="margin:0">Shown next to the recordings you make.</span></div>
+  <h2 style="margin-top:22px">Paired devices</h2><div>${D.map(d=>`<div class="dev"><div class="di">${ic(d.kind==='phone'?'phone':'tablet')}</div><div class="dl"><b>${esc(d.label||(d.kind==='phone'?'Phone':'Tobii'))}${d.me?'<span class="tag">This phone</span>':''}</b><span>${d.kind==='phone'?'Phone':'Tobii'}, seen ${ago(Date.parse(d.last_seen))}</span></div>${d.me?'':`<button class="ib" data-rm="${esc(d.id)}" aria-label="Remove">${ic('trash')}</button>`}</div>`).join('')}</div>
+  <h2 style="margin-top:22px">Link a Tobii</h2><p class="hint">Installed a new version of Bright Gaze? Open Phone on it and type its code here. It gets back her voices, photos, settings and sessions.</p>
+  <div class="row2" style="grid-template-columns:1fr auto"><input class="txt" id="lk" inputmode="numeric" pattern="[0-9]*" maxlength="7" placeholder="6-digit code" autocomplete="one-time-code"><button class="b sm gold" id="lkb">${ic('link')}<span>Link</span></button></div>
+  <h2 style="margin-top:26px">This phone</h2><div class="row2"><button class="b sm" id="unp">Unpair this phone</button><button class="b sm" id="rl">Refresh</button></div>
+  <p class="note">Bright Gaze by Bright Wins Lab. Only phones paired with a code from the Tobii can see or change anything.</p>`);
+ const me=$('#me',sh);me.onchange=me.onblur=()=>{S.st.me=me.value.trim().slice(0,24);save()};
+ $$('[data-rm]',sh).forEach(b=>b.onclick=async()=>{if(!confirm('Remove this device? It will no longer control Bright Gaze or see the family’s voices and photos.'))return;try{await api('revoke',{device_id:b.dataset.rm});close();await loadAll();toast('Removed')}catch(e){toast(errText(e.code))}});
+ $('#lkb',sh).onclick=async()=>{const c=$('#lk',sh).value.replace(/\D/g,'');if(c.length!==6){toast('Type the 6 digits shown on the Tobii.');return}
+  try{const r=await api('pair_claim',{code:c,label:(S.st.me?S.st.me+'’s phone':'Phone')});applyInfo(r);close();toast(r.joined==='phone'?'Linked. The Tobii is bringing everything back.':'Linked');setTimeout(()=>loadAll(true),4000)}catch(e){toast(errText(e.code))}};
+ $('#unp',sh).onclick=async()=>{if(!confirm('Unpair this phone? Voices and photos stay with the Tobii and the family cloud.'))return;try{await api('revoke',{})}catch(e){}close();lost()};
+ $('#rl',sh).onclick=()=>{close();loadAll()}}
+
+/* ---------- Pair ---------- */
+function isIOS(){return /iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)}
+function pairHTML(){const pre=(location.hash.match(/pair=(\d{6})/)||[])[1]||'';const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+ return `<div class="pair view"><div class="orb big" aria-hidden="true"></div><h1>Bright Gaze</h1><p class="lede">Control her screen from across the room, and record your voice for her activities.</p>
+ <ol class="steps"><li>On the Tobii, tap the top-right corner three times to open the caregiver screen.</li><li>Choose <b>Phone</b>. A six-digit code appears.</li><li>Type it here.</li></ol>
+ <div class="code" id="code">${[0,1,2,3,4,5].map(i=>`<div class="c"></div>`).join('')}<input id="ci" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code" aria-label="Pairing code" value="${pre}"></div>
+ <div class="msg" id="msg"></div><button class="b gold" id="pb" style="width:100%">${ic('link')}<span>Pair with the Tobii</span></button>
+ ${isIOS()&&!standalone?`<div class="banner" style="margin-top:22px">${ic('phone')}<div>Tip: add this page to your Home Screen first (Share, then Add to Home Screen) and pair from there. It opens like an app.</div></div>`:''}
+ <div class="foot">Bright Gaze · Bright Wins Lab<br>Private to your family. No account needed.</div></div>`}
+function bindPair(){const ci=$('#ci'),boxes=$$('#code .c'),msg=$('#msg'),pb=$('#pb');
+ const paint=()=>{const v=ci.value.replace(/\D/g,'').slice(0,6);if(v!==ci.value)ci.value=v;boxes.forEach((b,i)=>{b.textContent=v[i]||'';b.classList.toggle('f',!!v[i]);b.classList.toggle('cur',document.activeElement===ci&&i===Math.min(v.length,5))})};
+ ci.oninput=()=>{paint();msg.textContent='';if(ci.value.length===6)go()};ci.onfocus=ci.onblur=paint;paint();
+ async function go(){const c=ci.value;if(c.length!==6){msg.textContent='Type the 6 digits shown on the Tobii.';return}pb.disabled=true;pb.innerHTML='<i class="spin"></i>';
+  try{const r=await api('pair_claim',{code:c,label:'Phone'});applyInfo(r);history.replaceState(null,'',location.pathname+location.search);msg.className='msg ok';msg.textContent='Paired';buzz();
+   setTimeout(()=>{render();live(true);loadAll(true)},450)}
+  catch(e){pb.disabled=false;pb.innerHTML=ic('link')+'<span>Pair with the Tobii</span>';msg.className='msg';msg.textContent=errText(e.code);const cd=$('#code');cd.classList.remove('shake');void cd.offsetWidth;cd.classList.add('shake');if(e.code==='wrong_code'){ci.value='';paint()}ci.focus()}}
+ pb.onclick=go;if(ci.value.length===6){msg.className='msg ok';msg.textContent='Code from the Tobii filled in. Tap Pair.'}else setTimeout(()=>ci.focus(),300)}
+
+/* ---------- lifecycle ---------- */
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&paired()){live();hi();if(Date.now()-S.lastLoad>30000)loadAll(true)}});
+addEventListener('online',()=>{if(paired()){live(true);loadAll(true)}render()});addEventListener('offline',()=>{paintConn();if(S.st.tab==='remote')show('remote',true)});
+addEventListener('hashchange',()=>{if(!paired())render()});
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+async function linkFromHash(){const c=(location.hash.match(/pair=(\d{6})/)||[])[1];if(!c||!paired())return;history.replaceState(null,'',location.pathname+location.search);
+ if(!confirm('Link this Tobii to your family? It gets her voices, photos, settings and sessions.'))return;
+ try{const r=await api('pair_claim',{code:c,label:S.st.me?S.st.me+'’s phone':'Phone'});applyInfo(r);toast('Linked. The Tobii is bringing everything back.');setTimeout(()=>loadAll(true),4000)}catch(e){toast(errText(e.code))}}
+addEventListener('hashchange',linkFromHash);
+render();if(paired()){live();loadAll(true);linkFromHash()}
+</script>
+</body>
+</html>
