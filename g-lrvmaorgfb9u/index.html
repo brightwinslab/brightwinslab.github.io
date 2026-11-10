@@ -122,6 +122,9 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:0;border-radiu
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
 .ph{position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden;background:var(--p2)}
 .ph img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .4s}.ph img.ok{opacity:1}
+.ph .cap{position:absolute;left:0;right:0;bottom:0;padding:16px 8px 6px;font-size:12.5px;font-weight:600;text-align:left;color:#fff;background:linear-gradient(0deg,rgba(0,0,0,.6),transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph .mic{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:rgba(7,11,24,.6);display:flex;align-items:center;justify-content:center;color:var(--gold)}.ph .mic .ic{width:13px;height:13px}
+.viewer .vf{width:100%;max-width:420px;margin-top:16px;display:flex;flex-direction:column;gap:10px}.viewer .vm{display:flex;gap:8px;align-items:center}.viewer .vm .b{flex:1;white-space:nowrap;font-size:14.5px;padding:0 12px}
 .ph.up::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.12) 50%,transparent 70%);background-size:200% 100%;animation:shim 1.2s linear infinite}
 @keyframes shim{from{background-position:150% 0}to{background-position:-50% 0}}
 .empty{padding:34px 22px;text-align:center;color:var(--tx2);border:1px dashed var(--line2);border-radius:22px;margin-top:16px}
@@ -166,9 +169,9 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:0;border-radiu
 .tabs button.on{color:var(--tx)}.tabs button.on .ic{color:var(--gold)}
 
 /* ---------- sheets ---------- */
-.scrim{position:fixed;inset:0;z-index:50;background:rgba(3,5,12,.6);opacity:0;transition:opacity .28s;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.scrim{position:fixed;inset:0;z-index:70;background:rgba(3,5,12,.6);opacity:0;transition:opacity .28s;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
 .scrim.in{opacity:1}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:51;max-height:92vh;overflow:auto;padding:10px 22px calc(var(--sab) + 24px);border-radius:30px 30px 0 0;background:linear-gradient(180deg,#141c36,#0b1124);border-top:1px solid var(--line2);transform:translateY(105%);transition:transform .38s var(--ease);max-width:620px;margin:0 auto;box-shadow:0 -30px 60px -20px rgba(0,0,0,.7)}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:71;max-height:92vh;overflow:auto;padding:10px 22px calc(var(--sab) + 24px);border-radius:30px 30px 0 0;background:linear-gradient(180deg,#141c36,#0b1124);border-top:1px solid var(--line2);transform:translateY(105%);transition:transform .38s var(--ease);max-width:620px;margin:0 auto;box-shadow:0 -30px 60px -20px rgba(0,0,0,.7)}
 .sheet.in{transform:none}
 .grab{width:40px;height:5px;border-radius:5px;background:var(--line2);margin:0 auto 14px}
 .sheet h3{font-family:var(--disp);font-weight:600;font-size:26px;line-height:1.15;margin:6px 0 6px}
@@ -215,7 +218,7 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:0;border-radiu
 .spin{width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(29,20,5,.25);border-top-color:var(--goldink);animation:spin .8s linear infinite}
 .spin.lt{border-color:rgba(255,255,255,.18);border-top-color:var(--gold)}
 @keyframes spin{to{transform:rotate(360deg)}}
-.toast{position:fixed;left:50%;bottom:calc(var(--sab) + 96px);z-index:70;transform:translate(-50%,20px);opacity:0;max-width:calc(100% - 40px);width:max-content;padding:13px 18px;border-radius:16px;background:#1c2542;border:1px solid var(--line2);box-shadow:0 18px 40px -16px #000;font-size:14.5px;font-weight:550;transition:opacity .25s,transform .3s var(--ease);pointer-events:none}
+.toast{position:fixed;left:50%;bottom:calc(var(--sab) + 96px);z-index:90;transform:translate(-50%,20px);opacity:0;max-width:calc(100% - 40px);width:max-content;padding:13px 18px;border-radius:16px;background:#1c2542;border:1px solid var(--line2);box-shadow:0 18px 40px -16px #000;font-size:14.5px;font-weight:550;transition:opacity .25s,transform .3s var(--ease);pointer-events:none}
 .toast.in{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 @media (min-width:700px){main{padding-top:14px}}
@@ -336,7 +339,9 @@ function paintConn(){const c=$('#conn');if(!c)return;let cls='off',t='Offline';
 /* ---------- Remote ---------- */
 const fmtT=s=>{s=Math.max(0,Math.round(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
 const fmtDur=s=>{s=Math.round(s||0);return s<60?s+' s':Math.round(s/6)/10+' min'};
-function acts(){return(S.tobii&&S.tobii.acts)||(S.backup&&S.backup.acts)||[]}
+/* shown until the Tobii has synced its own list (0.7 activities) */
+const ACTS0=[['doll','Baby Doll','#ff9ec4'],['street','Our Street','#FF9F6B'],['fish','Fish Friend','#4fd1ff'],['seek','Hide & Seek','#FFB35C'],['shop','Market Day','#FF9F6B'],['follow','Follow the Friend','#ffd23f'],['photo','Living Photo','#ff9f7a'],['hill','Peekaboo Hill','#5fe0b0'],['garden','Sound Garden','#ff8fc0'],['cards','Two Cards','#9db4ff'],['farm','Sleepy Farm','#ffcf7a']].map(([id,title,hue])=>({id,title,hue,on:true}));
+function acts(){const a=(S.tobii&&S.tobii.acts)||(S.backup&&S.backup.acts);return a&&a.length?a:ACTS0}
 const herName=()=>((S.tobii&&S.tobii.name)||(S.backup&&S.backup.settings&&S.backup.settings.name)||'').trim();
 const V={},B={};
 V.remote=()=>{const nm=herName();const off=navigator.onLine===false;
@@ -354,7 +359,6 @@ V.remote=()=>{const nm=herName();const off=navigator.onLine===false;
  <h2>Moments <small>while this screen is open</small></h2><div class="feed" id="feed">${feedHTML()}</div>`};
 function feedHTML(){return S.feed.length?S.feed.map(f=>`<div><span>${esc(f.s)}</span><time>${f.t}</time></div>`).join(''):'<div><span>Nothing yet. Moments appear here as she plays.</span></div>'}
 function actsHTML(){const L=acts(),th=(S.backup&&S.backup.thumbs)||{},cur=S.tobii&&S.tobii.scene;
- if(!L.length)return `<div class="empty" style="grid-column:1/-1">${ic('remote')}<div>Activities appear once the Tobii has synced.</div></div>`;
  return L.map(a=>`<button class="act${cur===a.id?' on':''}${a.on===false?' off':''}" data-act="${esc(a.id)}" style="--hue:${esc(a.hue||'#ffc766')}"><div class="art" ${th[a.id]?`style="background-image:url('${th[a.id]}')"`:''}></div><div class="nm"><span>${esc(a.title)}</span>${cur===a.id?'<span class="playing">Playing</span>':''}</div></button>`).join('')}
 function paintActs(){const el=$('#acts');if(el){el.innerHTML=actsHTML();$$('[data-act]',el).forEach(b=>b.onclick=()=>{if(cmd('play',{id:b.dataset.act}))toast('Starting '+b.querySelector('.nm span').textContent)})}}
 B.remote=()=>{$('#bPause').onclick=()=>{const p=S.tobii&&S.tobii.paused;if(cmd(p?'resume':'pause')&&S.tobii){S.tobii.paused=!p;paintNow()}};
@@ -460,7 +464,7 @@ function recSheet(cat,label){let st=null,mr=null,chunks=[],t0=0,raf=0,wav=null,o
  $('#rr',sh).onclick=()=>{ra.classList.add('hide');wv.classList.add('hide');start()};
  $('#rs',sh).onclick=async e=>{const b=e.currentTarget;const out=wav||orig;if(!out)return;b.disabled=true;b.innerHTML='<i class="spin"></i>';
   try{const who=(S.st.me||'Family').slice(0,24);const id=await upload('voice',out,{cat,name:who+' · '+new Date().toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+(wav?'':' · '+(out.type||'').split(';')[0])});
-   S.files.push({id,kind:'voice',cat,name:who,mime:out.type,status:'ready',rev:1e15,created_at:new Date().toISOString()});cmd('sync');close();show('voices',true);toast('Saved. It plays on the Tobii in a moment.')}
+   S.files.push({id,kind:'voice',cat,name:who,mime:out.type,status:'ready',rev:1e15,created_at:new Date().toISOString()});cmd('sync');close();show(S.st.tab,true);toast('Saved. It plays on the Tobii in a moment.')}
   catch(err){b.disabled=false;b.innerHTML=ic('check')+'<span>Save</span>';toast(errText(err.code))}};
  start()}
 function toWav(au){const sr=au.sampleRate,n=au.length,ch=au.numberOfChannels;const m=new Float32Array(n);for(let c=0;c<ch;c++){const d=au.getChannelData(c);for(let i=0;i<n;i++)m[i]+=d[i]/ch}
@@ -479,9 +483,13 @@ function drawWave(cv,P){const c=cv.getContext('2d'),W=cv.width,H=cv.height;c.cle
 V.photos=()=>{const P=S.files.filter(f=>f.kind==='photo').sort((a,b)=>b.rev-a.rev);
  return `<h1>Photos</h1><p class="lede">Faces of the people and pets she loves. They appear in Living Photo on the Tobii.</p>
  <div class="row2"><label class="b gold">${ic('camera')}<span>Take a photo</span><input type="file" accept="image/*" capture="environment" id="pCam" hidden></label><label class="b">${ic('image')}<span>Choose photos</span><input type="file" accept="image/*" multiple id="pLib" hidden></label></div>
- ${P.length||S.up.length?`<div class="pgrid" id="pg">${S.up.map(()=>`<div class="ph up"></div>`).join('')}${P.map(f=>`<button class="ph" data-ph="${esc(f.id)}" aria-label="Photo"><img alt="" data-src="${esc(f.id)}"></button>`).join('')}</div>`
+ ${P.length||S.up.length?`<div class="pgrid" id="pg">${S.up.map(()=>`<div class="ph up"></div>`).join('')}${P.map(f=>{const lb=(f.meta&&f.meta.label)||'',msg=vFiles('pv_'+pkey(f)).length;return `<button class="ph" data-ph="${esc(f.id)}" aria-label="${esc(lb||'Photo')}"><img alt="" data-src="${esc(f.id)}">${msg?`<span class="mic">${ic('mic')}</span>`:''}${lb?`<span class="cap">${esc(lb)}</span>`:''}</button>`}).join('')}</div>`
   :`<div class="empty">${ic('photos')}<div>No photos yet. Take one now, or choose a few from your library.</div></div>`}
- <p class="note">${P.length} photo${P.length===1?'':'s'}. Photos are resized on this phone before they are sent.</p>`};
+ <p class="note">${P.length} photo${P.length===1?'':'s'}. Tap a photo to name it or record a message for it. Photos are resized on this phone before they are sent.</p>`};
+const pkey=f=>f.local_id&&/^photo:/.test(f.local_id)?f.local_id:'photo:c-'+f.id;
+function nameFromFile(fn){let s=String(fn||'').replace(/\.[a-z0-9]{2,5}$/i,'').replace(/[_]+/g,' ').replace(/\s*\(\d+\)$/,'').trim();
+ if(!s||/^(img|pxl|dsc|dscn|dcim|mvimg|vid|image|photo|pic|screenshot|whatsapp|signal|fb_img|received|edited|camera|cam|p\d{3,}|\d)/i.test(s)||/\d{4,}/.test(s)||!/[a-z]/i.test(s))return'';
+ s=s.replace(/-/g,' ').replace(/\s+/g,' ').slice(0,40);return s.charAt(0).toUpperCase()+s.slice(1)}
 B.photos=async()=>{$('#pCam').onchange=e=>addPhotos(e.target.files);$('#pLib').onchange=e=>addPhotos(e.target.files);
  $$('[data-ph]').forEach(b=>b.onclick=()=>viewer(b.dataset.ph));
  const ids=S.files.filter(f=>f.kind==='photo').map(f=>f.id);const U=await urls(ids);$$('img[data-src]').forEach(im=>{const u=U[im.dataset.src];if(u&&!im.src){im.onload=()=>im.classList.add('ok');im.src=u}})};
@@ -489,12 +497,22 @@ async function shrink(file){const url=URL.createObjectURL(file);try{const im=new
  const cv=document.createElement('canvas');cv.width=w;cv.height=h;const c=cv.getContext('2d');c.imageSmoothingQuality='high';c.drawImage(im,0,0,w,h);return await new Promise((res,rej)=>cv.toBlob(b=>b?res(b):rej(new Error('jpeg')),'image/jpeg',.86))}finally{URL.revokeObjectURL(url)}}
 async function addPhotos(fl){const files=[...(fl||[])].filter(f=>/^image\//.test(f.type)||/\.(jpe?g|png|heic|webp)$/i.test(f.name));if(!files.length)return;
  S.up=files.map(()=>1);show('photos',true);let ok=0,err=null;
- for(const f of files){try{const b=await shrink(f);const id=await upload('photo',b,{name:(S.st.me||'Family')+' · '+new Date().toLocaleDateString([],{month:'short',day:'numeric'})});
-   S.files.push({id,kind:'photo',status:'ready',rev:1e15+ok,created_at:new Date().toISOString()});ok++}catch(e){err=e.code||'server'}S.up.pop();if(S.st.tab==='photos')show('photos',true)}
+ for(const f of files){try{const label=nameFromFile(f.name);/* name from the original file, before re-encoding */const b=await shrink(f);const id=await upload('photo',b,{name:(S.st.me||'Family')+' · '+new Date().toLocaleDateString([],{month:'short',day:'numeric'}),meta:label?{label}:undefined});
+   S.files.push({id,kind:'photo',status:'ready',rev:1e15+ok,meta:label?{label}:null,created_at:new Date().toISOString()});ok++}catch(e){err=e.code||'server'}S.up.pop();if(S.st.tab==='photos')show('photos',true)}
  S.up=[];if(ok)cmd('sync');show('photos',true);toast(err?(ok?`${ok} sent. `:'')+errText(err):ok===1?'Photo sent to the Tobii':`${ok} photos sent to the Tobii`)}
-function viewer(id){const v=document.createElement('div');v.className='viewer';v.innerHTML=`<img alt="" src="${esc(S.urls[id]||'')}"><div class="row2"><button class="b" id="vx">${ic('x')}<span>Close</span></button><button class="b" id="vd" style="color:#ffb3a8">${ic('trash')}<span>Delete</span></button></div>`;
- document.body.appendChild(v);requestAnimationFrame(()=>v.classList.add('in'));const close=()=>{v.classList.remove('in');setTimeout(()=>v.remove(),260)};
- $('#vx',v).onclick=close;v.onclick=e=>{if(e.target===v)close()};$('#vd',v).onclick=async()=>{close();await delFile(id,'Delete this photo from the Tobii and the cloud?')}}
+function viewer(id){const f=S.files.find(x=>x.id===id)||{},key=pkey(f),lb=(f.meta&&f.meta.label)||'';const v=document.createElement('div');v.className='viewer';
+ const msgHTML=()=>{const L=vFiles('pv_'+key);return `${L.length?`<button class="b sm" data-pl="${esc(L[L.length-1].id)}">${ic('play')}<span>Play message</span></button><button class="ib" data-del="${esc(L[L.length-1].id)}" aria-label="Delete message">${ic('trash')}</button>`:''}<button class="b sm" id="vr">${ic('mic')}<span>${L.length?'Record again':'Record a message'}</span></button>`};
+ v.innerHTML=`<img alt="" src="${esc(S.urls[id]||'')}"><div class="vf"><input class="txt" id="vn" maxlength="40" placeholder="Name, e.g. Grandma" value="${esc(lb)}" autocomplete="off" aria-label="Name">
+  <div class="vm" id="vm">${msgHTML()}</div></div><div class="row2"><button class="b" id="vx">${ic('x')}<span>Close</span></button><button class="b" id="vd" style="color:#ffb3a8">${ic('trash')}<span>Delete</span></button></div>`;
+ document.body.appendChild(v);requestAnimationFrame(()=>v.classList.add('in'));
+ const saveName=async()=>{const n=$('#vn',v).value.trim().slice(0,40);if(n===((f.meta&&f.meta.label)||''))return;try{const r=await api('set_meta',{id,meta:{label:n}});f.meta=r.meta||Object.assign({},f.meta,{label:n});cmd('sync');toast(n?'Name saved':'Name removed')}catch(e){toast(errText(e.code))}};
+ const close=()=>{saveName();v.classList.remove('in');setTimeout(()=>{v.remove();if(S.st.tab==='photos')show('photos',true)},260)};
+ $('#vn',v).onchange=saveName;$('#vn',v).onkeydown=e=>{if(e.key==='Enter')e.target.blur()};
+ v.onclick=async e=>{if(e.target===v){close();return}const t=e.target.closest('button');if(!t)return;
+  if(t.id==='vx')close();else if(t.id==='vd'){close();await delFile(id,'Delete this photo from the Tobii and the cloud?')}
+  else if(t.id==='vr'){await saveName();recSheet('pv_'+key,($('#vn',v).value.trim()?'A message for '+$('#vn',v).value.trim():'A message for this photo'));const iv=setInterval(()=>{if(!document.body.contains(v)){clearInterval(iv);return}const m=$('#vm',v);const h=msgHTML();if(m.innerHTML!==h)m.innerHTML=h},700)}
+  else if(t.dataset.pl!==undefined)playVoice(t.dataset.pl,t);else if(t.dataset.del!==undefined){await delFile(t.dataset.del,'Delete this message?');$('#vm',v).innerHTML=msgHTML()}};
+ urls(vFiles('pv_'+key).map(x=>x.id))}
 
 /* ---------- Videos (screen recordings from the Tobii) ---------- */
 const fmtMB=b=>b>=1048576?(b/1048576).toFixed(b>=104857600?0:1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
