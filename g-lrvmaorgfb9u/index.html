@@ -66,7 +66,7 @@ h2{font-size:17px;font-weight:650;margin:30px 0 12px;display:flex;align-items:ba
 .eye.look::after{opacity:.35;animation:breathe 2.8s ease-in-out infinite}
 .eye.away{color:var(--away);background:radial-gradient(circle at 38% 34%,rgba(255,190,107,.4),rgba(255,190,107,.08) 70%)}
 @keyframes breathe{0%,100%{transform:scale(.94);opacity:.18}50%{transform:scale(1.06);opacity:.45}}
-.gz>div:nth-child(2){min-width:0}.gz b{display:block;font-size:18px;font-weight:650;white-space:nowrap}.gz span{color:var(--tx2);font-size:14px;white-space:nowrap}
+.gz>div:nth-child(2){min-width:0;flex:1}.gz b{display:block;font-size:18px;font-weight:650;white-space:nowrap}.gz>div:nth-child(2) span{display:block;color:var(--tx2);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nums{margin-left:auto;display:flex;gap:16px;text-align:right}.nums div{display:flex;flex-direction:column}.nums b{font-size:20px;font-variant-numeric:tabular-nums}.nums span{font-size:12.5px;color:var(--tx3)}
 .now.asleep .title{color:var(--tx2)}
 
@@ -140,9 +140,28 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:0;border-radiu
 .hbar span{font-size:14.5px}.hbar b{font-size:13.5px;color:var(--tx2);font-weight:600}
 .note{font-size:13px;color:var(--tx3);margin-top:12px}
 
+/* ---------- screen recording ---------- */
+.recc{margin-top:10px;padding:16px;border-radius:22px;background:var(--p1);border:1px solid var(--line)}
+.recrow{display:flex;gap:10px}
+.b.recb{flex:1}.b.recb i{width:12px;height:12px;border-radius:50%;background:var(--rec);box-shadow:0 0 0 4px rgba(255,122,107,.18)}
+.b.recb.on{background:rgba(255,122,107,.14);border-color:rgba(255,122,107,.45);color:#ffd7d0;font-variant-numeric:tabular-nums}.b.recb.on i{animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{50%{opacity:.3}}
+.tog{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.tg{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 14px;border-radius:14px;background:var(--p2);font-size:14px;font-weight:600;color:var(--tx2);transition:background .2s,color .2s}
+.tg i{width:18px;height:18px;border-radius:6px;border:1.5px solid var(--tx3);display:flex;align-items:center;justify-content:center}
+.tg.on{color:var(--tx);background:rgba(255,199,102,.12)}.tg.on i{background:var(--gold);border-color:var(--gold)}.tg.on i::after{content:"";width:8px;height:4px;border:2px solid var(--goldink);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.recn{font-size:13px;color:var(--tx3);margin-top:10px}
+.vid{display:flex;gap:14px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}.vid:last-child{border-bottom:0}
+.vid .th{width:84px;height:56px;border-radius:12px;flex:none;background:radial-gradient(90% 90% at 30% 20%,color-mix(in srgb,var(--hue) 55%,#fff 0%),color-mix(in srgb,var(--hue) 30%,#0b1124) 75%);background-size:cover;background-position:center;position:relative}
+.vid .th::after{content:"";position:absolute;inset:0;border-radius:12px;background:rgba(0,0,0,.18) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7v10l8-5z' fill='white'/%3E%3C/svg%3E") center/26px no-repeat}
+.vid .m{flex:1;min-width:0}.vid .m b{display:block;font-weight:600;font-size:15.5px}.vid .m span{display:block;font-size:13px;color:var(--tx3)}
+.meter{height:8px;border-radius:8px;background:rgba(255,255,255,.08);overflow:hidden;margin:6px 0 4px}.meter i{display:block;height:100%;background:linear-gradient(90deg,#ffd98a,#ffac4a);border-radius:8px}
+.player video{width:100%;max-height:56vh;border-radius:18px;background:#000;display:block}
+.prog{height:6px;border-radius:6px;background:rgba(255,255,255,.1);overflow:hidden;margin:18px 0 8px}.prog i{display:block;height:100%;width:0;background:var(--gold);transition:width .2s}
+
 /* ---------- tab bar ---------- */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:center;padding:8px 10px calc(var(--sab) + 8px);background:linear-gradient(0deg,rgba(7,11,24,.96),rgba(7,11,24,.78));-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border-top:1px solid var(--line)}
-.tabs button{flex:1;max-width:140px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0 5px;border-radius:16px;font-size:11.5px;font-weight:600;color:var(--tx3);transition:color .2s}
+.tabs button{flex:1;max-width:120px;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0 5px;border-radius:16px;font-size:11.5px;font-weight:600;color:var(--tx3);transition:color .2s}
 .tabs button .ic{width:25px;height:25px}
 .tabs button.on{color:var(--tx)}.tabs button.on .ic{color:var(--gold)}
 
@@ -219,6 +238,7 @@ const IC={
  remote:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.2"/>',
  voices:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21M8.5 21h7"/>',
  photos:'<rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4.5 4"/>',
+ videos:'<rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3"/>',full:'<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',dl:'<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M4.5 19.5h15"/>',
  insights:'<path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/>',
  gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/>',
  eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
@@ -278,9 +298,13 @@ const tobiiOn=()=>S.tobii&&Date.now()-S.tobiiAt<12000;
 function onEvt(e){const t=new Date(e.at||Date.now()).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});let s='';
  if(e.k==='scene'&&e.title)s=e.title==='Playroom'?'Back in the playroom':e.title==='Resting'?'Resting':e.title+' started';else if(e.k==='away')s='She looked away; calling her back';else if(e.k==='back')s='She’s looking again';
  else if(e.k==='end')s='Session ended'+(e.s?`, ${fmtDur(e.s.dur)}, ${e.s.hits} look${e.s.hits===1?'':'s'}`:'');else if(e.k==='synced'){loadAll(true);return}
+ else if(e.k==='rec'&&!e.on){setTimeout(()=>loadAll(true),10000);s='Screen recording saved'+(e.dur?`, ${fmtDur(e.dur)}`:'')}
+ else if(e.k==='rec')s=e.on?'Screen recording started':'Screen recording saved'+(e.dur?`, ${fmtDur(e.dur)}`:'');
+ else if(e.k==='video'){loadAll(true);s=e.removed?`Video uploaded; ${e.removed} older removed to stay under 600 MB`:'Video uploaded to Videos'}
  if(!s)return;S.feed.unshift({t,s});S.feed=S.feed.slice(0,5);const f=$('#feed');if(f)f.innerHTML=feedHTML()}
 setInterval(()=>{if(document.visibilityState==='visible')hi();paintNow();paintConn()},20000);
-setInterval(()=>{paintNow();paintConn()},3000);
+setInterval(()=>{paintNow();paintConn()},1000);
+setInterval(()=>{if(document.visibilityState==='visible'&&S.st.tab==='videos'&&paired())loadAll(true)},30000);
 
 /* ---------- data ---------- */
 async function loadAll(quiet){if(!paired())return;try{const h=await api('hello',{label:S.st.me?S.st.me+'’s phone':undefined});applyInfo(h);
@@ -296,7 +320,7 @@ async function upload(kind,blob,meta){const mime=(blob.type||(kind==='photo'?'im
  await api('up_done',{id:u.id});return u.id}
 
 /* ---------- shell ---------- */
-const TABS=[['remote','Remote'],['voices','Voices'],['photos','Photos'],['insights','Insights']];
+const TABS=[['remote','Remote'],['voices','Voices'],['photos','Photos'],['videos','Videos'],['insights','Insights']];
 function render(){const R=$('#root');if(!paired()){R.innerHTML=pairHTML();bindPair();return}
  R.innerHTML=`<header class="top" id="top"><div class="orb" aria-hidden="true"></div><div class="brand"><b>Bright Gaze</b><span>Bright Wins Lab</span></div><span class="conn" id="conn"><i></i><span>…</span></span><button class="gear" id="gear" aria-label="Settings">${ic('gear')}</button></header>
  <main id="main"></main><nav class="tabs">${TABS.map(([k,n])=>`<button data-tab="${k}" class="${S.st.tab===k?'on':''}">${ic(k)}<span>${n}</span></button>`).join('')}</nav>`;
@@ -321,6 +345,9 @@ V.remote=()=>{const nm=herName();const off=navigator.onLine===false;
   <div class="gz"><div class="eye" id="nEye">${ic('eye')}</div><div><b id="nLook">—</b><span id="nLook2">&nbsp;</span></div><div class="nums" id="nNums"></div></div></section>
  <div class="ctl"><button class="b gold" id="bPause">${ic('pause')}<span>Pause</span></button><button class="b col" id="bNext" aria-label="Next">${ic('next')}<span>Next</span></button><button class="b col" id="bEnd" aria-label="End">${ic('stop')}<span>End</span></button></div>
  <div class="say"><button class="b" id="bName">${ic('wave')}<span>${nm?'Say '+esc(nm):'Say her name'}</span></button><button class="b" id="bLook">${ic('wave')}<span>“Look here!”</span></button></div>
+ <h2>Record her screen</h2><div class="recc"><div class="recrow"><button class="b recb" id="bRec"><i></i><span>Record</span></button><button class="b col" id="bFull" style="width:96px;flex:none" aria-label="Full screen on the Tobii">${ic('full')}<span>Full screen</span></button></div>
+  <div class="tog"><button class="tg" id="tFace"><i></i>Her face</button><button class="tg" id="tGaze"><i></i>Where she looks</button></div>
+  <div class="recn" id="recn">Music, sounds and family voices are in the video. The Tobii’s own voice isn’t. Up to 15 minutes.</div></div>
  <h2>Start</h2><div class="row2" style="margin-top:0"><button class="b" id="bHome">${ic('home')}<span>Playroom</span></button><button class="b" id="bStart">${ic('spark')}<span>Session</span></button></div>
  <h2>Play one activity</h2><div class="acts" id="acts">${actsHTML()}</div>
  <h2>Volume</h2><div class="vol">${ic('quiet')}<input type="range" id="vol" min="0.1" max="1" step="0.05" value="${(S.tobii&&S.tobii.vol)||(S.backup&&S.backup.settings&&S.backup.settings.volume)||.5}" aria-label="Volume">${ic('speaker')}</div>
@@ -336,6 +363,9 @@ B.remote=()=>{$('#bPause').onclick=()=>{const p=S.tobii&&S.tobii.paused;if(cmd(p
  $('#bHome').onclick=()=>{if(cmd('home'))toast('Opening the playroom')};$('#bStart').onclick=()=>{if(cmd('start'))toast('Starting a session')};
  const v=$('#vol');const pv=()=>v.style.setProperty('--p',((v.value-.1)/.9*100).toFixed(0)+'%');pv();let vt=0;
  v.oninput=()=>{pv();S.volTouch=Date.now();clearTimeout(vt);vt=setTimeout(()=>cmd('volume',{v:+v.value}),180)};
+ $('#bRec').onclick=()=>{const r=S.tobii&&S.tobii.vrec,on=!(r&&r.on);if(cmd('rec',{on,face:!!S.st.recFace,gaze:!!S.st.recGaze})){if(S.tobii){S.tobii.vrec=Object.assign({},r||{},{on,t:0});S.tobii.t=Date.now()}paintNow();toast(on?'Recording her screen':'Saving the video')}};
+ $('#bFull').onclick=()=>{if(cmd('full'))toast('Tap the bubble on the Tobii to go full screen')};
+ const tg=(id,k)=>{const b=$('#'+id);b.onclick=()=>{S.st[k]=!S.st[k];save();b.classList.toggle('on',!!S.st[k]);cmd('rec',{[k==='recFace'?'face':'gaze']:!!S.st[k]})};b.classList.toggle('on',!!S.st[k])};tg('tFace','recFace');tg('tGaze','recGaze');
  paintActs();paintNow()};
 function paintNow(){const n=$('#now');if(!n)return;const T=S.tobii,on=tobiiOn();
  const set=(id,h)=>{const e=$('#'+id);if(e&&e.innerHTML!==h)e.innerHTML=h};
@@ -351,13 +381,16 @@ function paintNow(){const n=$('#now');if(!n)return;const T=S.tobii,on=tobiiOn();
  if(T.help)sub='She stopped looking; it settled into the quiet corner.';
  set('nWhere',esc(where));set('nTitle',esc(mode==='console'?'Paused':T.title||'Resting'));set('nSub',esc(sub)||'&nbsp;');
  const tm=$('#nTime');if(T.rec){tm.classList.remove('hide');tm.textContent=fmtT(T.rec.t+(Date.now()-T.t)/1000)}else tm.classList.add('hide');
- const e=$('#nEye');if(T.looking===true){e.className='eye look';e.innerHTML=ic('eye');set('nLook','Looking');set('nLook2',T.calling?'Back with us':'Her eyes are on the screen')}
+ const e=$('#nEye');if(T.looking===true){e.className='eye look';e.innerHTML=ic('eye');set('nLook','Looking');set('nLook2',T.calling?'Back with us':'Eyes on the screen')}
  else if(T.looking===false){e.className='eye away';e.innerHTML=ic('eyeoff');set('nLook','Looked away');set('nLook2',T.away?`${T.away} s`+(T.calling?', calling her':''):'Just now')}
  else{e.className='eye';e.innerHTML=ic('eye');set('nLook',T.paused?'Paused':'Not playing');set('nLook2','&nbsp;')}
  set('nNums',T.rec?`<div><b>${T.rec.hits}</b><span>looks</span></div><div><b>${T.rec.away}</b><span>away</span></div>`:'');
  const nb=$('#bName');if(nb){const h=`${ic('wave')}<span>${T.name?'Say '+esc(T.name):'Say her name'}</span>`;if(nb.innerHTML!==h)nb.innerHTML=h}
  const bp=$('#bPause');if(bp){const h=T.paused?`${ic('play')}<span>Resume</span>`:`${ic('pause')}<span>Pause</span>`;if(bp.innerHTML!==h)bp.innerHTML=h;bp.disabled=!playing}
  const v=$('#vol');if(v&&T.vol&&Date.now()-(S.volTouch||0)>4000&&Math.abs(v.value-T.vol)>.01){v.value=T.vol;v.style.setProperty('--p',((T.vol-.1)/.9*100).toFixed(0)+'%')}
+ const r=T.vrec||{},rb=$('#bRec');if(rb){const t=r.on?fmtT(r.t+(Date.now()-T.t)/1000):'';const h=r.on?`<i></i><span>${t} · Stop</span>`:`<i></i><span>${r.up!=null?'Uploading '+r.up+'%':'Record'}</span>`;if(rb.innerHTML!==h)rb.innerHTML=h;rb.classList.toggle('on',!!r.on);rb.disabled=r.ok===false}
+ const rn=$('#recn');if(rn){const t=r.ok===false?'Screen recording is not available on this Tobii’s browser.':r.note||'Music, sounds and family voices are in the video. The Tobii’s own voice isn’t. Up to 15 minutes.';if(rn.textContent!==t)rn.textContent=t}
+ const bf=$('#bFull');if(bf){const h=`${ic('full')}<span>${T.fs?'Full screen ✓':'Full screen'}</span>`;if(bf.innerHTML!==h)bf.innerHTML=h}
  const cur=$('.act.on');if((cur&&cur.dataset.act)!==(T.scene||undefined))paintActs()}
 
 /* ---------- Voices ---------- */
@@ -462,6 +495,37 @@ async function addPhotos(fl){const files=[...(fl||[])].filter(f=>/^image\//.test
 function viewer(id){const v=document.createElement('div');v.className='viewer';v.innerHTML=`<img alt="" src="${esc(S.urls[id]||'')}"><div class="row2"><button class="b" id="vx">${ic('x')}<span>Close</span></button><button class="b" id="vd" style="color:#ffb3a8">${ic('trash')}<span>Delete</span></button></div>`;
  document.body.appendChild(v);requestAnimationFrame(()=>v.classList.add('in'));const close=()=>{v.classList.remove('in');setTimeout(()=>v.remove(),260)};
  $('#vx',v).onclick=close;v.onclick=e=>{if(e.target===v)close()};$('#vd',v).onclick=async()=>{close();await delFile(id,'Delete this photo from the Tobii and the cloud?')}}
+
+/* ---------- Videos (screen recordings from the Tobii) ---------- */
+const fmtMB=b=>b>=1048576?(b/1048576).toFixed(b>=104857600?0:1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
+V.videos=()=>{const L=S.files.filter(f=>f.kind==='video').sort((a,b)=>b.rev-a.rev),used=L.reduce((a,f)=>a+(f.size||0),0),cap=600*1048576,th=(S.backup&&S.backup.thumbs)||{};
+ const hue=id=>(acts().find(x=>x.id===id)||{}).hue||'#ffc766';
+ return `<h1>Videos</h1><p class="lede">Screen recordings of her playing, made from the Remote screen or on the Tobii. The newest 600 MB are kept; the oldest are removed first.</p>
+ ${L.length?`<div class="meter" aria-label="Storage used"><i style="width:${Math.min(100,used/cap*100).toFixed(1)}%"></i></div><p class="note" style="margin:0 0 16px">${fmtMB(used)} of 600 MB used</p>
+ <div class="list">${L.map(f=>{const m=f.meta||{},d=new Date(m.at||f.created_at);return `<div class="vid"><button class="th" data-vp="${esc(f.id)}" aria-label="Play" style="--hue:${esc(hue(m.act))};${th[m.act]?`background-image:url('${th[m.act]}')`:''}"></button>
+  <div class="m"><b>${esc(m.title||f.name||'Bright Gaze')}</b><span>${d.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'})}, ${d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}</span><span>${fmtT(m.dur||0)} · ${fmtMB(f.size||0)}${m.face?' · with her face':''}</span></div>
+  <button class="ib" data-vd="${esc(f.id)}" aria-label="Download">${ic('dl')}</button><button class="ib" data-vx="${esc(f.id)}" aria-label="Delete">${ic('trash')}</button></div>`}).join('')}</div>`
+ :`<div class="empty">${ic('videos')}<div>No videos yet. On the Remote screen, tap Record while she plays.</div></div>`}`};
+B.videos=()=>{$('#main').onclick=e=>{const t=e.target.closest('button');if(!t)return;
+ if(t.dataset.vp)playVideo(t.dataset.vp);else if(t.dataset.vd)saveVideo(t.dataset.vd);else if(t.dataset.vx)delFile(t.dataset.vx,'Delete this video from the family cloud? A copy may still be in the Tobii’s Downloads folder.')}};
+S.vb={};
+async function fetchVideo(id,onp){if(S.vb[id])return S.vb[id];const f=S.files.find(x=>x.id===id);const r=await api('down_url',{ids:[id]});const P=(r.parts&&r.parts[id])||(r.urls&&r.urls[id]?[r.urls[id]]:null);
+ if(!P){const e=new Error('gone');e.code='server';throw e}const out=[];let got=0;const total=(f&&f.size)||1;
+ for(const u of P){const res=await fetch(u);if(!res.ok){const e=new Error('dl');e.code='storage';throw e}
+  if(res.body&&res.body.getReader){const rd=res.body.getReader(),ch=[];for(;;){const {done,value}=await rd.read();if(done)break;ch.push(value);got+=value.length;onp&&onp(Math.min(1,got/total))}out.push(new Blob(ch))}
+  else{const b=await res.blob();got+=b.size;onp&&onp(Math.min(1,got/total));out.push(b)}}
+ const blob=new Blob(out,{type:(f&&f.mime)||'video/webm'});S.vb={[id]:blob};return blob}
+function vName(f){const m=f.meta||{},d=new Date(m.at||f.created_at),p=n=>String(n).padStart(2,'0');return `Bright-Gaze-${String(m.title||'video').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,'')}-${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}.webm`}
+function playVideo(id){const f=S.files.find(x=>x.id===id)||{},m=f.meta||{};let url=null;
+ const {sh,close}=sheet(`<h3>${esc(m.title||'Video')}</h3><p class="hint">${new Date(m.at||f.created_at).toLocaleString([],{weekday:'long',hour:'numeric',minute:'2-digit'})} · ${fmtT(m.dur||0)}</p><div class="player" id="pl"><div class="prog"><i id="pp"></i></div><p class="hint" id="pm">Loading ${fmtMB(f.size||0)}…</p></div>
+  <div class="row2"><button class="b sm" id="pdl">${ic('dl')}<span>Download</span></button><button class="b sm" id="pcl">Close</button></div>`,()=>{if(url)URL.revokeObjectURL(url)});
+ $('#pcl',sh).onclick=close;$('#pdl',sh).onclick=()=>saveVideo(id);
+ fetchVideo(id,p=>{const b=$('#pp',sh);if(b)b.style.width=(p*100).toFixed(0)+'%'}).then(blob=>{url=URL.createObjectURL(blob);const v=document.createElement('video');v.controls=true;v.playsInline=true;v.src=url;
+  v.onloadedmetadata=()=>{if(v.duration===Infinity){v.currentTime=1e7;v.ontimeupdate=()=>{v.ontimeupdate=null;v.currentTime=0}}};
+  v.onerror=()=>{$('#pl',sh).innerHTML=`<p class="hint">This phone can’t play WebM videos. Tap Download and open the file in an app such as VLC.</p>`};
+  const pl=$('#pl',sh);pl.innerHTML='';pl.appendChild(v);v.play().catch(()=>{})}).catch(e=>{const pm=$('#pm',sh);if(pm)pm.textContent=errText(e.code)})}
+async function saveVideo(id){const f=S.files.find(x=>x.id===id)||{};toast('Getting the video…',6000);
+ try{const blob=await fetchVideo(id);const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=vName(f);document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},60000);toast('Downloaded')}catch(e){toast(errText(e.code))}}
 
 /* ---------- Insights ---------- */
 V.insights=()=>{const b=S.backup;const ss=((b&&b.sessions)||[]).filter(s=>s&&s.start).sort((x,y)=>x.start-y.start);
