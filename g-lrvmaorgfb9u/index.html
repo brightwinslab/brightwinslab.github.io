@@ -100,6 +100,40 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border:0;border-radiu
 .act.off .art{filter:saturate(.4) brightness(.7)}
 .feed{margin-top:8px}.feed div{display:flex;justify-content:space-between;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line);font-size:14.5px;color:var(--tx2)}.feed div:last-child{border-bottom:0}.feed time{color:var(--tx3);font-variant-numeric:tabular-nums}
 
+/* one status line */
+.gz .stl{display:flex;align-items:center;gap:10px;min-width:0;flex:1}.gz .stl>span{display:block;min-width:0;font-size:15.5px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* collapsible sections */
+details.sec{margin-top:30px;border-radius:22px;background:var(--p1);border:1px solid var(--line)}
+details.sec>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:16px 18px;font-weight:650;font-size:17px;cursor:pointer;min-height:56px}
+details.sec>summary::-webkit-details-marker{display:none}details.sec>summary .ic{width:18px;height:18px;color:var(--tx3);transition:transform .25s var(--ease)}details.sec[open]>summary .ic{transform:rotate(90deg)}
+details.sec>summary small{margin-left:auto;font-size:13px;font-weight:500;color:var(--tx3);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62%}
+details.sec>summary small.play{color:var(--gold)}
+details.sec>.in{padding:2px 14px 16px}
+/* prompt feedback */
+.say .b{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}.say .b>span{display:flex;align-items:center;gap:10px}
+.say .fb{font-size:12.5px;font-weight:600;color:var(--tx3);min-height:16px;padding-left:32px;transition:color .2s}.say .fb.wait{color:var(--away)}.say .fb.ok{color:var(--look)}.say .fb.no{color:var(--rec)}
+/* activity placeholders before the first sync */
+.act .art.ph{display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.88)}.act .art.ph .ic{width:46px;height:46px;stroke-width:1.5;filter:drop-shadow(0 4px 10px rgba(0,0,0,.3))}
+/* levels */
+.lvr{padding:12px 4px 14px;border-bottom:1px solid var(--line)}.lvr:last-of-type{border-bottom:0}
+.lvh{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}.lvh b{font-weight:650;font-size:15.5px}.lvh small{font-size:13px;color:var(--tx3)}
+.lvh .lvs{margin-left:auto;font-size:12.5px;font-weight:600;color:var(--tx3);white-space:nowrap}.lvh .lvs.fx{color:var(--gold)}.lvh .lvs.cg{color:#c9b8ff}.lvh .lvs.sv{color:var(--look)}
+.lvd{width:9px;height:9px;border-radius:50%;background:var(--hue,#ffc766);box-shadow:0 0 10px -1px var(--hue,#ffc766);flex:none;align-self:center}
+.segp{display:flex;gap:4px;padding:4px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid var(--line)}
+.segp button{flex:1;min-width:0;height:44px;border-radius:12px;font-size:15px;font-weight:650;color:var(--tx2);transition:background .2s,color .2s}
+.segp button.on{background:linear-gradient(160deg,#ffd98a,#ffac4a);color:var(--goldink);box-shadow:0 6px 16px -8px rgba(255,170,70,.8)}
+.segp button.cg{color:#bfb0f0}.segp button.cg.on{background:linear-gradient(160deg,#d9ccff,#a993f5);color:#160d33}
+.segp button.pend{animation:pend 1s ease-in-out infinite}@keyframes pend{50%{opacity:.55}}
+.segp button[disabled]{opacity:.4}.segp i{width:1px;margin:6px 2px;background:var(--line2);flex:none}
+.segp.calm button{font-size:14.5px}
+.lvnote{font-size:13px;color:var(--tx3);margin:10px 4px 0}.lvnote b{color:#c9b8ff;font-weight:650}
+/* last session */
+.last{border-radius:22px;background:var(--p1);border:1px solid var(--line);padding:16px 18px}
+.last .lh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.last .lh b{font-weight:650;font-size:15.5px}.last .lh span{font-size:13px;color:var(--tx3)}
+.l3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 6px}.l3 div{padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.04)}
+.l3 b{display:block;font-size:20px;font-weight:650;font-variant-numeric:tabular-nums;line-height:1.2}.l3 span{font-size:12.5px;color:var(--tx3)}
+.last .lf{font-size:14px;color:var(--tx2);margin-top:8px;display:flex;align-items:center;gap:8px}.last .lf .lvd{align-self:center}
+
 /* ---------- lists (voices) ---------- */
 .list{border-radius:22px;background:var(--p1);border:1px solid var(--line);overflow:hidden}
 .vr{border-bottom:1px solid var(--line)}.vr:last-child{border-bottom:0}
@@ -289,7 +323,7 @@ function lost(){unlive();Object.assign(S.st,{family:'',device:'',channel:'',devi
 function live(force){if(!paired()||!S.st.channel||typeof supabase==='undefined')return;if(S.ch&&!force)return;unlive();
  try{if(!S.sb)S.sb=supabase.createClient(CFG.url,S.keyIdx?CFG.legacy:CFG.key,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
   const ch=S.sb.channel('bg-'+S.st.channel,{config:{broadcast:{self:false}}});S.ch=ch;S.rt='connecting';
-  ch.on('broadcast',{event:'status'},m=>{S.tobii=Object.assign({},S.tobii&&!(m.payload||{}).acts?{acts:S.tobii.acts}:{},m.payload||{});S.tobiiAt=Date.now();paintNow()})
+  ch.on('broadcast',{event:'status'},m=>{S.tobii=Object.assign({},S.tobii&&!(m.payload||{}).acts?{acts:S.tobii.acts}:{},m.payload||{});S.tobiiAt=Date.now();if(m.payload&&m.payload.ph===false&&Date.now()-(S.hiAt||0)>3000){S.hiAt=Date.now();hi()}lvConfirm();paintNow()})
    .on('broadcast',{event:'evt'},m=>{const e=m.payload||{};onEvt(e)});
   ch.subscribe(s=>{if(S.ch!==ch)return;S.rt=s==='SUBSCRIBED'?'live':s==='CHANNEL_ERROR'||s==='TIMED_OUT'?'error':'off';
    if(s==='SUBSCRIBED'){S.rtFail=0;hi()}if(s==='CHANNEL_ERROR'){S.rtFail=(S.rtFail||0)+1;if(S.rtFail===3&&!S.keyIdx){S.keyIdx=1;S.sb=null;setTimeout(()=>live(true),800)}}paintConn()})}catch(e){S.rt='error'}}
@@ -299,6 +333,9 @@ function cmd(k,x={}){buzz();if(!S.ch||S.rt!=='live'){toast(navigator.onLine===fa
  try{S.ch.send({type:'broadcast',event:'cmd',payload:Object.assign({k,at:Date.now()},x)})}catch(e){}return true}
 const tobiiOn=()=>S.tobii&&Date.now()-S.tobiiAt<12000;
 function onEvt(e){const t=new Date(e.at||Date.now()).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});let s='';
+ if(e.k==='said'){for(const w in S.pr){const p=S.pr[w];if(p&&p.id===e.id){p.st=e.st;paintPr(w)}}return}
+ if(e.k==='set'){const p=S.lvp[e.key];if(p&&p.id===e.id){if(e.ok===false){delete S.lvp[e.key];paintLv();toast('That level isn’t available on this Tobii yet.')}}return}
+ if(e.k==='end'&&e.s){S.lastEnd={at:e.at||Date.now(),s:e.s};paintLast()}
  if(e.k==='scene'&&e.title)s=e.title==='Playroom'?'Back in the playroom':e.title==='Resting'?'Resting':e.title+' started';else if(e.k==='away')s='She looked away; calling her back';else if(e.k==='back')s='She’s looking again';
  else if(e.k==='end')s='Session ended'+(e.s?`, ${fmtDur(e.s.dur)}, ${e.s.hits} look${e.s.hits===1?'':'s'}`:'');else if(e.k==='synced'){loadAll(true);return}
  else if(e.k==='rec'&&!e.on){setTimeout(()=>loadAll(true),10000);s='Screen recording saved'+(e.dur?`, ${fmtDur(e.dur)}`:'')}
@@ -313,7 +350,7 @@ setInterval(()=>{if(document.visibilityState==='visible'&&S.st.tab==='videos'&&p
 async function loadAll(quiet){if(!paired())return;try{const h=await api('hello',{label:S.st.me?S.st.me+'’s phone':undefined});applyInfo(h);
   const [c,b]=await Promise.all([api('changes',{since:0}),api('backup_load')]);
   S.files=(c.files||[]).filter(f=>f.status==='ready');S.backup=b.backup&&b.backup.data||null;S.backupAt=b.backup&&b.backup.updated_at;S.lastLoad=Date.now();S.urlAt=0;
-  if(!S.ch)live();if(S.st.tab!=='remote'||!quiet)show(S.st.tab,true);else paintActs()}
+  if(!S.ch)live();if(S.st.tab!=='remote'||!quiet)show(S.st.tab,true);else{paintActs();paintLv();paintLast()}}
  catch(e){if(!quiet&&e.code!=='unpaired')toast(errText(e.code))}}
 async function urls(ids){const now=Date.now();if(now-S.urlAt>600000){S.urls={};S.urlAt=now}const need=ids.filter(i=>!S.urls[i]);
  for(let i=0;i<need.length;i+=100){try{const r=await api('down_url',{ids:need.slice(i,i+100)});Object.assign(S.urls,r.urls||{})}catch(e){}}return S.urls}
@@ -338,62 +375,127 @@ function paintConn(){const c=$('#conn');if(!c)return;let cls='off',t='Offline';
 
 /* ---------- Remote ---------- */
 const fmtT=s=>{s=Math.max(0,Math.round(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
-const fmtDur=s=>{s=Math.round(s||0);return s<60?s+' s':Math.round(s/6)/10+' min'};
+const fmtDur=s=>{s=Math.max(0,Math.round(s||0));if(s<60)return s+' s';const m=Math.floor(s/60),r=s%60;return m+' min'+(r&&m<10?' '+r+' s':'')};
 /* shown until the Tobii has synced its own list (0.7 activities) */
 const ACTS0=[['doll','Baby Doll','#ff9ec4'],['street','Our Street','#FF9F6B'],['fish','Fish Friend','#4fd1ff'],['seek','Hide & Seek','#FFB35C'],['shop','Market Day','#FF9F6B'],['follow','Follow the Friend','#ffd23f'],['photo','Living Photo','#ff9f7a'],['hill','Peekaboo Hill','#5fe0b0'],['garden','Sound Garden','#ff8fc0'],['cards','Two Cards','#9db4ff'],['farm','Sleepy Farm','#ffcf7a']].map(([id,title,hue])=>({id,title,hue,on:true}));
 function acts(){const a=(S.tobii&&S.tobii.acts)||(S.backup&&S.backup.acts);return a&&a.length?a:ACTS0}
 const herName=()=>((S.tobii&&S.tobii.name)||(S.backup&&S.backup.settings&&S.backup.settings.name)||'').trim();
 const V={},B={};
-V.remote=()=>{const nm=herName();const off=navigator.onLine===false;
+const AIC={doll:'<circle cx="12" cy="7.5" r="3.5"/><path d="M5.5 20.5c0-4.2 2.9-7.5 6.5-7.5s6.5 3.3 6.5 7.5z"/>',street:'<path d="M3.5 11L12 4l8.5 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/>',
+ fish:'<path d="M2.5 12c3-4.5 9.5-6 13.5-2l4-3v10l-4-3c-4 4-10.5 2.5-13.5-2z"/><circle cx="8" cy="11" r=".9"/>',seek:'<circle cx="7.5" cy="8" r="1.8"/><circle cx="16.5" cy="8" r="1.8"/><circle cx="4.5" cy="13" r="1.6"/><circle cx="19.5" cy="13" r="1.6"/><path d="M12 12c-3 0-5 3.5-5 5.5 0 1.5 1.4 2 2.4 2s1.6-.5 2.6-.5 1.6.5 2.6.5 2.4-.5 2.4-2c0-2-2-5.5-5-5.5z"/>',
+ shop:'<path d="M3.5 9h17l-1.7 10.5H5.2z"/><path d="M8 9l3.2-5M16 9l-3.2-5"/>',follow:'<path d="M12 3.5l2.5 5.2 5.7.8-4.1 4 1 5.7L12 16.5l-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/>',
+ photo:'<rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4.5 4"/>',hill:'<path d="M2 19.5c3-6.5 6.2-8.5 10-8.5s7 2 10 8.5z"/><circle cx="17" cy="5.5" r="2"/>',
+ garden:'<circle cx="12" cy="9" r="2"/><circle cx="12" cy="4.6" r="2.2"/><circle cx="16.4" cy="9" r="2.2"/><circle cx="12" cy="13.4" r="2.2"/><circle cx="7.6" cy="9" r="2.2"/><path d="M12 15.6V22M12 19c-2-2-4-2-5.5-1.5"/>',
+ cards:'<rect x="3" y="5" width="8" height="11.5" rx="2"/><rect x="13" y="7.5" width="8" height="11.5" rx="2"/>',farm:'<path d="M19.5 14.5A8 8 0 019.5 4.5a8 8 0 1010 10z"/>'};
+V.remote=()=>{const nm=herName();const off=navigator.onLine===false;const v0=(S.tobii&&S.tobii.vol)||(S.backup&&S.backup.settings&&S.backup.settings.volume)||.5;
  return `${off?`<div class="banner">${ic('wifioff')}<div>Your phone is offline. The Tobii keeps playing; controls work again when you reconnect.</div></div>`:''}
- <section class="now" id="now"><div class="where"><span id="nWhere">On her screen</span><span class="timer hide" id="nTime">0:00</span></div><div class="title" id="nTitle">Looking for the Tobii…</div><div class="sub" id="nSub">&nbsp;</div>
-  <div class="gz"><div class="eye" id="nEye">${ic('eye')}</div><div><b id="nLook">—</b><span id="nLook2">&nbsp;</span></div><div class="nums" id="nNums"></div></div></section>
+ <section class="now" id="now"><div class="where"><span id="nWhere">On her screen</span><span class="timer hide" id="nTime">0:00</span></div><div class="title" id="nTitle">Looking for the Tobii…</div>
+  <div class="gz"><div class="eye" id="nEye">${ic('eye')}</div><div class="stl"><span id="nSt">&nbsp;</span></div><div class="nums" id="nNums"></div></div></section>
  <div class="ctl"><button class="b gold" id="bPause">${ic('pause')}<span>Pause</span></button><button class="b col" id="bNext" aria-label="Next">${ic('next')}<span>Next</span></button><button class="b col" id="bEnd" aria-label="End">${ic('stop')}<span>End</span></button></div>
- <div class="say"><button class="b" id="bName">${ic('wave')}<span>${nm?'Say '+esc(nm):'Say her name'}</span></button><button class="b" id="bLook">${ic('wave')}<span>“Look here!”</span></button></div>
+ <div class="vol">${ic('quiet')}<input type="range" id="vol" min="0.1" max="1" step="0.05" value="${v0}" aria-label="Volume">${ic('speaker')}</div>
+ <div class="say"><button class="b" id="bName"><span>${ic('wave')}<span id="bNameL">${nm?'Say '+esc(nm):'Say her name'}</span></span><small class="fb" id="fb-name"></small></button><button class="b" id="bLook"><span>${ic('wave')}<span>“Look here!”</span></span><small class="fb" id="fb-look"></small></button></div>
+ <h2>Play</h2><div class="row2" style="margin-top:0"><button class="b" id="bHome">${ic('home')}<span>Playroom</span></button><button class="b" id="bStart">${ic('spark')}<span>Session</span></button></div>
+ <details class="sec" id="actsD" ${S.open.acts?'open':''}><summary>${ic('chev')}<span>One activity</span><small id="actsN"></small></summary><div class="in"><div class="acts" id="acts">${actsHTML()}</div></div></details>
  <h2>Record her screen</h2><div class="recc"><div class="recrow"><button class="b recb" id="bRec"><i></i><span>Record</span></button><button class="b col" id="bFull" style="width:96px;flex:none" aria-label="Full screen on the Tobii">${ic('full')}<span>Full screen</span></button></div>
   <div class="tog"><button class="tg" id="tFace"><i></i>Her face</button><button class="tg" id="tGaze"><i></i>Where she looks</button></div>
-  <div class="recn" id="recn">Music, sounds and family voices are in the video. The Tobii’s own voice isn’t. Up to 15 minutes.</div></div>
- <h2>Start</h2><div class="row2" style="margin-top:0"><button class="b" id="bHome">${ic('home')}<span>Playroom</span></button><button class="b" id="bStart">${ic('spark')}<span>Session</span></button></div>
- <h2>Play one activity</h2><div class="acts" id="acts">${actsHTML()}</div>
- <h2>Volume</h2><div class="vol">${ic('quiet')}<input type="range" id="vol" min="0.1" max="1" step="0.05" value="${(S.tobii&&S.tobii.vol)||(S.backup&&S.backup.settings&&S.backup.settings.volume)||.5}" aria-label="Volume">${ic('speaker')}</div>
+  <div class="recn" id="recn">${REC_NOTE}</div></div>
+ <details class="sec" id="lvD" ${S.open.lv?'open':''}><summary>${ic('chev')}<span>Levels</span><small id="lvSum"></small></summary><div class="in" id="lv">${lvHTML()}</div></details>
+ <h2>Last session</h2><div id="last">${lastHTML()}</div>
  <h2>Moments <small>while this screen is open</small></h2><div class="feed" id="feed">${feedHTML()}</div>`};
+const REC_NOTE='Music, sounds, Voice A and family voices are in the video. Lines with her name (said by the Tobii’s own voice) aren’t. Up to 15 minutes.';
 function feedHTML(){return S.feed.length?S.feed.map(f=>`<div><span>${esc(f.s)}</span><time>${f.t}</time></div>`).join(''):'<div><span>Nothing yet. Moments appear here as she plays.</span></div>'}
+/* real tiles come from the Tobii's thumbnails; before the first sync each tile shows its colour and an icon, never a blank */
 function actsHTML(){const L=acts(),th=(S.backup&&S.backup.thumbs)||{},cur=S.tobii&&S.tobii.scene;
- return L.map(a=>`<button class="act${cur===a.id?' on':''}${a.on===false?' off':''}" data-act="${esc(a.id)}" style="--hue:${esc(a.hue||'#ffc766')}"><div class="art" ${th[a.id]?`style="background-image:url('${th[a.id]}')"`:''}></div><div class="nm"><span>${esc(a.title)}</span>${cur===a.id?'<span class="playing">Playing</span>':''}</div></button>`).join('')}
-function paintActs(){const el=$('#acts');if(el){el.innerHTML=actsHTML();$$('[data-act]',el).forEach(b=>b.onclick=()=>{if(cmd('play',{id:b.dataset.act}))toast('Starting '+b.querySelector('.nm span').textContent)})}}
+ return L.map(a=>`<button class="act${cur===a.id?' on':''}${a.on===false?' off':''}" data-act="${esc(a.id)}" style="--hue:${esc(a.hue||'#ffc766')}">${th[a.id]?`<div class="art" style="background-image:url('${th[a.id]}')"></div>`:`<div class="art ph">${AIC[a.id]?`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${AIC[a.id]}</svg>`:''}</div>`}<div class="nm"><span>${esc(a.title)}</span>${cur===a.id?'<span class="playing">Playing</span>':''}</div></button>`).join('')}
+function paintActs(){const el=$('#acts');if(el){el.innerHTML=actsHTML();$$('[data-act]',el).forEach(b=>b.onclick=()=>{if(cmd('play',{id:b.dataset.act}))toast('Starting '+b.querySelector('.nm span').textContent)})}paintActsN()}
+function paintActsN(){const n=$('#actsN');if(!n)return;const cur=S.tobii&&tobiiOn()&&S.tobii.scene,a=cur&&acts().find(x=>x.id===cur);const t=a?'Playing: '+a.title:acts().length+' activities';if(n.textContent!==t)n.textContent=t;n.classList.toggle('play',!!a)}
+
+/* ---------- Levels: set on the phone, applied live on the Tobii, read back from its status ---------- */
+const LV=[{k:'calm',label:'Calm level',what:'how much happens',opts:['gentle','standard','lively'],def:'gentle',names:{gentle:'Gentle',standard:'Standard',lively:'Lively'}},
+ {k:'seekLevel',act:'seek',what:'level',opts:['auto',1,2,3,4,5],cg:[4,5],reach:'seekLvl'},{k:'fishPace',act:'fish',what:'pace',opts:['auto',1,2,3,4,5],cg:[4,5],reach:'fishLvl',legacy:{gentle:1,lively:4}},
+ {k:'shopChoices',act:'shop',what:'things to choose from',opts:[2,3,4],def:2},{k:'dollCards',act:'doll',what:'cards on screen',opts:[2,3,4],def:2},
+ {k:'cardsLevel',act:'cards',what:'level',opts:['auto',1,2,3],reach:'cardsLvl'},{k:'followLevel',act:'follow',what:'level',opts:['auto',1,2,3],reach:'followLvl'}];
+S.lvp={};
+/* the Tobii's live values; before it answers, the last backup */
+function lvVals(){if(S.tobii&&S.tobii.lv)return S.tobii.lv;const st=S.backup&&S.backup.settings;if(!st)return null;const o={};
+ for(const L of LV){let v=st[L.k];if(L.legacy&&L.legacy[v]!=null)v=L.legacy[v];if(v==null||!L.opts.some(x=>String(x)===String(v)))v=L.def!=null?L.def:'auto';o[L.k]=typeof v==='string'&&/^\d+$/.test(v)?+v:v;if(L.reach)o[L.reach]=Math.min(L.cg?3:9,Math.max(1,Math.round(+st[L.reach]||1)))}return o}
+function lvName(L,v){return L.names&&L.names[v]||(v==='auto'?'Auto':String(v))}
+function lvHTML(){const V=lvVals(),live=tobiiOn(),A=acts();const rows=LV.filter(L=>!L.act||A.some(a=>a.id===L.act));
+ if(!V)return `<p class="lvnote" style="margin-top:4px">Levels appear after the Tobii syncs once.</p>`;
+ return rows.map(L=>{const a=L.act&&A.find(x=>x.id===L.act),p=S.lvp[L.k],v=p?p.v:V[L.k];
+  let st='';if(p)st=`<span class="lvs">Saving…</span>`;else if(L.k==='calm')st='';else if(v==='auto'&&L.reach)st=`<span class="lvs">Auto · now ${V[L.reach]||1}</span>`;else if(L.cg&&L.cg.includes(v))st=`<span class="lvs cg">Chosen by you</span>`;else if(L.reach)st=`<span class="lvs fx">Fixed</span>`;
+  if(S.lvok&&S.lvok.k===L.k&&Date.now()-S.lvok.t<2500)st=`<span class="lvs sv">Saved on the Tobii</span>`;
+  const btn=o=>`<button data-lk="${L.k}" data-lv="${o}" class="${String(o)===String(v)?'on':''}${L.cg&&L.cg.includes(o)?' cg':''}${p&&String(o)===String(v)?' pend':''}" ${live?'':'disabled'}>${lvName(L,o)}</button>`;
+  return `<div class="lvr" style="--hue:${esc((a&&a.hue)||'#62e3b5')}"><div class="lvh"><i class="lvd"></i><b>${esc(a?a.title:L.label)}</b><small>${esc(L.what)}</small>${st}</div>
+   <div class="segp${L.k==='calm'?' calm':''}">${L.opts.map(o=>(L.cg&&o===L.cg[0]?'<i></i>':'')+btn(o)).join('')}</div></div>`}).join('')+
+  `<p class="lvnote">${live?'Changes apply on the Tobii right away. ':'Open Bright Gaze on the Tobii to change levels. '}Auto stays between 1 and 3. <b>4–5: only when you choose.</b></p>`}
+function lvSum(){const V=lvVals();if(!V)return'';const c=LV[0];return lvName(c,V.calm||'gentle')+(V.seekLevel!=null?` · Seek ${lvName(LV[1],V.seekLevel)}`:'')+(V.fishPace!=null?` · Fish ${lvName(LV[2],V.fishPace)}`:'')}
+function paintLv(force){const el=$('#lv');if(!el)return;const h=lvHTML();if(force||el.dataset.h!==h){el.innerHTML=h;el.dataset.h=h}const sm=$('#lvSum');if(sm){const t=lvSum();if(sm.textContent!==t)sm.textContent=t}}
+function setLevel(k,raw){const L=LV.find(x=>x.k===k);if(!L)return;const v=/^\d+$/.test(raw)?+raw:raw;const id=Math.random().toString(36).slice(2,9);
+ if(!cmd('set',{key:k,v,id}))return;S.lvp[k]={v,id,t:Date.now()};S.lvok=null;paintLv();
+ setTimeout(()=>{const p=S.lvp[k];if(p&&p.id===id){delete S.lvp[k];paintLv();toast('The Tobii didn’t answer. Try again in a moment.')}},6000)}
+/* the Tobii's status confirms a level */
+function lvConfirm(){const V=S.tobii&&S.tobii.lv;if(!V)return;for(const k in S.lvp){const p=S.lvp[k];if(p&&String(V[k])===String(p.v)){delete S.lvp[k];S.lvok={k,t:Date.now()};setTimeout(()=>paintLv(),2600)}}}
+
+/* ---------- Last session ---------- */
+function lastHTML(){const ss=((S.backup&&S.backup.sessions)||[]).filter(s=>s&&s.start&&s.dur>=5).sort((a,b)=>a.start-b.start);let s=ss[ss.length-1];
+ const e=S.lastEnd;if(e&&(!s||e.at>s.start+(s.dur||0)*1000+60000))s={start:e.at-(e.s.dur||0)*1000,dur:e.s.dur,look:e.s.look,hits:e.s.hits,lapses:Array(e.s.away||0).fill(0),live:true};
+ if(!s)return `<div class="last"><div class="lh"><b>Nothing yet</b></div><p class="lvnote" style="margin:8px 0 0">After her first session, a short summary appears here.</p></div>`;
+ const d=new Date(s.start),today=d.toDateString()===new Date().toDateString(),when=(today?'Today':d.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'}))+', '+d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+ const per=(s.scenes||[]).filter(x=>x.dur>=10&&!['home','quiet','goodbye'].includes(x.id)).map(x=>[x.id,(+x.look||0)/x.dur*60]).sort((a,b)=>b[1]-a[1]);const fav=per[0]&&acts().find(a=>a.id===per[0][0]);
+ const ch=Array.isArray(s.choices)?s.choices:[],own=ch.filter(c=>c&&!c.modelled&&c.deliberate!==false).length,mod=ch.filter(c=>c&&c.modelled).length,away=(s.lapses||[]).length;
+ return `<div class="last"><div class="lh"><b>${when}</b><span>${s.free?'Free play':'Session'} · ${fmtDur(s.dur)}</span></div>
+  <div class="l3"><div><b>${(s.look||0)<60?Math.round(s.look||0)+' s':Math.round(s.look/60)+' min'}</b><span>looking</span></div><div><b>${s.hits||0}</b><span>${s.hits===1?'look':'looks'} that worked</span></div><div><b>${away}</b><span>look-away${away===1?'':'s'}</span></div></div>
+  ${fav?`<div class="lf" style="--hue:${esc(fav.hue||'#ffc766')}"><i class="lvd"></i>Held her look best: <b>${esc(fav.title)}</b></div>`:''}
+  ${ch.length?`<div class="lf">${own} choice${own===1?'':'s'} of her own${mod?` · ${mod} shown by the program`:''}</div>`:''}</div>`}
+function paintLast(){const el=$('#last');if(el){const h=lastHTML();if(el.innerHTML!==h)el.innerHTML=h}}
+
+/* ---------- prompts: sent -> (waiting for her line) -> played ---------- */
+S.pr={};
+function prompt(what){const id=Math.random().toString(36).slice(2,9);if(!cmd('say',{what,id}))return;S.pr[what]={id,st:'sent',t:Date.now()};paintPr(what);
+ setTimeout(()=>{const p=S.pr[what];if(p&&p.id===id&&p.st==='sent'){p.st='sent2';paintPr(what)}},3500);
+ setTimeout(()=>{const p=S.pr[what];if(p&&p.id===id){delete S.pr[what];paintPr(what)}},7000)}
+function paintPr(what){const el=$('#fb-'+what);if(!el)return;const p=S.pr[what];const M={sent:['Sent…',''],wait:['Waiting for her line…','wait'],played:['Played ✓','ok'],dropped:['Not played','no'],sent2:['Sent','']};const m=p?M[p.st]||['','']:['',''];
+ el.textContent=m[0];el.className='fb '+m[1]}
+
 B.remote=()=>{$('#bPause').onclick=()=>{const p=S.tobii&&S.tobii.paused;if(cmd(p?'resume':'pause')&&S.tobii){S.tobii.paused=!p;paintNow()}};
  $('#bNext').onclick=()=>cmd('next');$('#bEnd').onclick=()=>{if(cmd('end'))toast('Ending')};
- $('#bName').onclick=()=>cmd('say',{what:'name'});$('#bLook').onclick=()=>cmd('say',{what:'look'});
+ $('#bName').onclick=()=>prompt('name');$('#bLook').onclick=()=>prompt('look');
  $('#bHome').onclick=()=>{if(cmd('home'))toast('Opening the playroom')};$('#bStart').onclick=()=>{if(cmd('start'))toast('Starting a session')};
  const v=$('#vol');const pv=()=>v.style.setProperty('--p',((v.value-.1)/.9*100).toFixed(0)+'%');pv();let vt=0;
  v.oninput=()=>{pv();S.volTouch=Date.now();clearTimeout(vt);vt=setTimeout(()=>cmd('volume',{v:+v.value}),180)};
  $('#bRec').onclick=()=>{const r=S.tobii&&S.tobii.vrec,on=!(r&&r.on);if(cmd('rec',{on,face:!!S.st.recFace,gaze:!!S.st.recGaze})){if(S.tobii){S.tobii.vrec=Object.assign({},r||{},{on,t:0});S.tobii.t=Date.now()}paintNow();toast(on?'Recording her screen':'Saving the video')}};
  $('#bFull').onclick=()=>{if(cmd('full'))toast('Tap the bubble on the Tobii to go full screen')};
  const tg=(id,k)=>{const b=$('#'+id);b.onclick=()=>{S.st[k]=!S.st[k];save();b.classList.toggle('on',!!S.st[k]);cmd('rec',{[k==='recFace'?'face':'gaze']:!!S.st[k]})};b.classList.toggle('on',!!S.st[k])};tg('tFace','recFace');tg('tGaze','recGaze');
- paintActs();paintNow()};
+ $('#actsD').ontoggle=e=>{S.open.acts=e.target.open};$('#lvD').ontoggle=e=>{S.open.lv=e.target.open};
+ $('#lv').onclick=e=>{const b=e.target.closest('[data-lk]');if(b&&!b.disabled)setLevel(b.dataset.lk,b.dataset.lv)};
+ paintActs();paintLv(true);paintNow();['name','look'].forEach(paintPr)};
 function paintNow(){const n=$('#now');if(!n)return;const T=S.tobii,on=tobiiOn();
  const set=(id,h)=>{const e=$('#'+id);if(e&&e.innerHTML!==h)e.innerHTML=h};
- n.classList.toggle('asleep',!on);
+ n.classList.toggle('asleep',!on);paintLv();paintActsN();
  if(!on){n.style.setProperty('--hue','#6f7b97');set('nWhere','Tobii');$('#nTime').classList.add('hide');
-  set('nTitle',S.rt==='live'?'Waiting for the Tobii':'Connecting…');set('nSub',S.rt==='live'?'Open Bright Gaze on the Tobii and connect it to Wi-Fi.':'Reaching the family channel.');
-  $('#nEye').className='eye';set('nLook','—');set('nLook2','&nbsp;');set('nNums','');return}
+  set('nTitle',S.rt==='live'?'Waiting for the Tobii':'Connecting…');set('nSt',S.rt==='live'?'Open Bright Gaze on the Tobii and connect it to Wi-Fi.':'Reaching the family channel.');
+  $('#nEye').className='eye';set('nNums','');return}
  n.style.setProperty('--hue',T.hue||'#ffc766');
- const mode=T.mode,playing=mode==='play';let where='On her screen',sub='';
- if(mode==='console'){where='Caregiver screen open';sub='Someone is using the caregiver screen on the Tobii.'}
- else if(T.sess){sub=`Session, ${String(T.sess.stage||'').toLowerCase()} (${T.sess.i+1} of ${T.sess.n})`}else if(T.scene==='home')sub='She chooses by looking';else if(T.free&&playing)sub='Free play';
- if(T.paused){sub='Paused'+(sub?', '+sub.charAt(0).toLowerCase()+sub.slice(1):'')}
- if(T.help)sub='She stopped looking; it settled into the quiet corner.';
- set('nWhere',esc(where));set('nTitle',esc(mode==='console'?'Paused':T.title||'Resting'));set('nSub',esc(sub)||'&nbsp;');
+ const mode=T.mode,playing=mode==='play';let ctx='';
+ if(T.sess)ctx=`session, ${String(T.sess.stage||'').toLowerCase()} ${T.sess.i+1} of ${T.sess.n}`;else if(T.scene==='home')ctx='she chooses by looking';else if(T.free&&playing)ctx='free play';
+ /* one status line */
+ let st,eye='eye',ico='eye';
+ if(mode==='console'){st='Paused: caregiver screen open on the Tobii';ico='pause'}
+ else if(T.help){st='She stopped looking; it settled into the quiet corner';eye='eye away';ico='eyeoff'}
+ else if(T.paused){st='Paused'+(ctx?' · '+ctx:'');ico='pause'}
+ else if(T.looking===true){st=(T.calling?'Back with us':'Looking')+(ctx?' · '+ctx:'');eye='eye look'}
+ else if(T.looking===false){st='Looked away'+(T.away?` ${T.away} s`:'')+(T.calling?' · calling her':'');eye='eye away';ico='eyeoff'}
+ else st=playing?'Playing':'Not playing';
+ set('nWhere','On her screen');set('nTitle',esc(T.title||'Resting'));set('nSt',esc(st.charAt(0).toUpperCase()+st.slice(1)));
  const tm=$('#nTime');if(T.rec){tm.classList.remove('hide');tm.textContent=fmtT(T.rec.t+(Date.now()-T.t)/1000)}else tm.classList.add('hide');
- const e=$('#nEye');if(T.looking===true){e.className='eye look';e.innerHTML=ic('eye');set('nLook','Looking');set('nLook2',T.calling?'Back with us':'Eyes on the screen')}
- else if(T.looking===false){e.className='eye away';e.innerHTML=ic('eyeoff');set('nLook','Looked away');set('nLook2',T.away?`${T.away} s`+(T.calling?', calling her':''):'Just now')}
- else{e.className='eye';e.innerHTML=ic('eye');set('nLook',T.paused?'Paused':'Not playing');set('nLook2','&nbsp;')}
+ const e=$('#nEye');if(e.className!==eye)e.className=eye;const ih=ic(ico);if(e.innerHTML!==ih)e.innerHTML=ih;
  set('nNums',T.rec?`<div><b>${T.rec.hits}</b><span>looks</span></div><div><b>${T.rec.away}</b><span>away</span></div>`:'');
- const nb=$('#bName');if(nb){const h=`${ic('wave')}<span>${T.name?'Say '+esc(T.name):'Say her name'}</span>`;if(nb.innerHTML!==h)nb.innerHTML=h}
+ const nl=$('#bNameL');if(nl){const h=T.name?'Say '+esc(T.name):'Say her name';if(nl.innerHTML!==h)nl.innerHTML=h}
  const bp=$('#bPause');if(bp){const h=T.paused?`${ic('play')}<span>Resume</span>`:`${ic('pause')}<span>Pause</span>`;if(bp.innerHTML!==h)bp.innerHTML=h;bp.disabled=!playing}
  const v=$('#vol');if(v&&T.vol&&Date.now()-(S.volTouch||0)>4000&&Math.abs(v.value-T.vol)>.01){v.value=T.vol;v.style.setProperty('--p',((T.vol-.1)/.9*100).toFixed(0)+'%')}
  const r=T.vrec||{},rb=$('#bRec');if(rb){const t=r.on?fmtT(r.t+(Date.now()-T.t)/1000):'';const h=r.on?`<i></i><span>${t} · Stop</span>`:`<i></i><span>${r.up!=null?'Uploading '+r.up+'%':'Record'}</span>`;if(rb.innerHTML!==h)rb.innerHTML=h;rb.classList.toggle('on',!!r.on);rb.disabled=r.ok===false}
- const rn=$('#recn');if(rn){const t=r.ok===false?'Screen recording is not available on this Tobii’s browser.':r.note||'Music, sounds and family voices are in the video. The Tobii’s own voice isn’t. Up to 15 minutes.';if(rn.textContent!==t)rn.textContent=t}
+ const rn=$('#recn');if(rn){const t=r.ok===false?'Screen recording is not available on this Tobii’s browser.':r.note||REC_NOTE;if(rn.textContent!==t)rn.textContent=t}
  const bf=$('#bFull');if(bf){const h=`${ic('full')}<span>${T.fs?'Full screen ✓':'Full screen'}</span>`;if(bf.innerHTML!==h)bf.innerHTML=h}
  const cur=$('.act.on');if((cur&&cur.dataset.act)!==(T.scene||undefined))paintActs()}
 
@@ -409,10 +511,10 @@ function vRow(cat,label,hint){const L=vFiles(cat),open=S.open[cat];
 function shortName(f){const d=new Date(f.created_at);return (f.name||'').split(' · ')[0].slice(0,18)+' '+d.toLocaleDateString([],{month:'short',day:'numeric'})}
 V.voices=()=>{const W=(S.backup&&S.backup.words)||[];const groups={};for(const w of W)(groups[w.group||'Other']=groups[w.group||'Other']||[]).push(w);
  const rec=W.filter(w=>vFiles('say_'+w.key).length).length;
- return `<h1>Voices</h1><p class="lede">Her family’s voices play first. Anything you haven’t recorded uses the Tobii’s own voice. Keep each one short and warm.</p>
+ return `<h1>Voices</h1><p class="lede">Her family’s voices play first. Anything you haven’t recorded is said by Voice A, the built-in voice. Only lines with her name use the Tobii’s own voice. Keep each one short and warm.</p>
  <h2>Family voices</h2><div class="list">${FAMILY.map(([k,n,h])=>vRow(k,n,h)).join('')}</div>
  <h2>Words and phrases <small>${W.length?rec+' of '+W.length+' in your voice':''}</small></h2>
- ${W.length?Object.keys(groups).map((g,i)=>`<details class="grp" ${i===0||S.open['g:'+g]?'open':''} data-g="${esc(g)}"><summary>${ic('chev')}<span>${esc(g)}</span><small>${groups[g].filter(w=>vFiles('say_'+w.key).length).length} of ${groups[g].length}</small></summary><div class="list">${groups[g].map(w=>vRow('say_'+w.key,w.label,'Device voice')).join('')}</div></details>`).join('')
+ ${W.length?Object.keys(groups).map((g,i)=>`<details class="grp" ${i===0||S.open['g:'+g]?'open':''} data-g="${esc(g)}"><summary>${ic('chev')}<span>${esc(g)}</span><small>${groups[g].filter(w=>vFiles('say_'+w.key).length).length} of ${groups[g].length}</small></summary><div class="list">${groups[g].map(w=>vRow('say_'+w.key,w.label,w.v==='device'?'Tobii’s own voice':'Voice A')).join('')}</div></details>`).join('')
   :`<div class="empty">${ic('voices')}<div>The phrase list arrives after the Tobii syncs once. Open the caregiver screen on the Tobii and choose Phone, then Sync now.</div></div>`}
  <h2>Animal sounds <small>optional</small></h2><div class="list">${ANIMALS.map(n=>vRow('an_'+n,n[0].toUpperCase()+n.slice(1),'Built-in sound')).join('')}</div>`};
 B.voices=()=>{const M=$('#main');
