@@ -222,3 +222,8 @@ footer .follow-mini{margin:0}
 .promo>span:nth-child(2){flex:1;color:var(--muted);font-size:17px}
 .promo b{display:block;color:var(--ink);font:800 26px/1.15 'Baloo 2'}
 @media (max-width:640px){.promo{flex-wrap:wrap}.promo .btn{width:100%;text-align:center}}
+
+/* ad landing tweaks (Nov 26) */
+.btn{white-space:nowrap}
+@media (max-width:640px){.hero .appicon,.hero .follow-mini{display:none}}
+@media (max-width:380px){.brand span,.brand b{font-size:15px}}
