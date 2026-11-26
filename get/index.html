@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get Win the Day · Family Chores</title>
+<meta name="description" content="Get Win the Day: chore charts kids want to finish. On Google Play and the web. Join by Dec 31 and get the full app free for the first year.">
+<meta name="theme-color" content="#ffb441">
+<meta property="og:title" content="Win the Day: Family Chores">
+<meta property="og:description" content="Chore charts kids want to finish. Join by Dec 31 and get the full app free for the first year.">
+<meta property="og:image" content="https://brightwinslab.com/og-image.jpg">
+<link rel="canonical" href="https://brightwinslab.com/get/">
+<link rel="icon" href="/favicon.png">
+<style>
+:root{--ink:#24304a;--muted:#5d6780;--bg:#fff8ec}
+*{box-sizing:border-box}body{margin:0;font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:linear-gradient(160deg,#ffe8a8,#ffd0b0 60%,#ffc2c9);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.card{background:#fff;border-radius:28px;max-width:440px;width:100%;padding:28px 22px;text-align:center;box-shadow:0 18px 48px rgba(80,40,0,.18)}
+img.logo{width:84px;height:84px}h1{font-size:28px;margin:10px 0 4px}p{margin:8px 0;color:var(--muted)}
+.offer{background:#fff4d1;border-radius:14px;padding:10px 12px;color:var(--ink);margin:14px 0}
+.btn{display:block;margin:12px 0;padding:15px 16px;border-radius:16px;font-weight:700;text-decoration:none;font-size:18px}
+.play{background:#24304a;color:#fff}.web{background:#fff;color:#24304a;border:2px solid #24304a}
+small{display:block;color:var(--muted);margin-top:14px}
+</style>
+</head>
+<body>
+<main class="card">
+<img class="logo" src="/logo.svg" alt="">
+<h1>Win the Day</h1>
+<p>Chore charts and routines kids actually want to finish.</p>
+<p class="offer"><b>Join by December 31:</b> the full app is free for the first year.</p>
+<a class="btn play" id="play" href="https://play.google.com/store/apps/details?id=com.brightwinslab.winthedayfamily&amp;referrer=utm_source%3Dinvite%26utm_medium%3Dqr">Get it on Google Play</a>
+<a class="btn web" href="https://brightwinslab.com/win-the-day-legal/app/">Use it in your browser</a>
+<small>On iPhone? Use it in your browser for now. The App Store version is coming.</small>
+</main>
+<script>
+// Android phones go straight to Google Play (the invite card's QR code points here).
+try { if (/Android/i.test(navigator.userAgent) && !/[?&]stay\b/.test(location.search)) location.replace(document.getElementById('play').href); } catch (e) {}
+</script>
+</body>
+</html>
